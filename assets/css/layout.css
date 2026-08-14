@@ -1,0 +1,33 @@
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    font-family:Segoe UI, Arial, sans-serif;
+    background:#f4f6fb;
+}
+
+.app{
+    display:flex;
+    min-height:100vh;
+}
+
+.content{
+    flex:1;
+    padding:24px;
+}
+
+.topbar{
+    margin-bottom:24px;
+}
+
+#busca{
+    width:100%;
+    max-width:650px;
+    padding:14px;
+    border:1px solid #ddd;
+    border-radius:10px;
+    font-size:15px;
+}

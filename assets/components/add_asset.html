@@ -1,0 +1,41 @@
+<div id="addAssetModal" class="modal" style="display:none">
+    <div class="modal-backdrop"></div>
+    <div class="modal-card">
+        <h3>Adicionar Ativo</h3>
+        <form id="addAssetForm">
+            <label>Estado
+                <select id="add_estado" required>
+                    <option value="PR">PR</option>
+                    <option value="SC">SC</option>
+                    <option value="RS">RS</option>
+                </select>
+            </label>
+
+            <label>Unidade
+                <input id="add_unidade" required placeholder="Ex: 0264-0 CLEVELANDIA" />
+            </label>
+
+            <label>Equipamento
+                <input id="add_equipamento" required placeholder="Ex: pr0264ra1.pr.caixa" />
+            </label>
+
+            <label>Host / IP
+                <input id="add_host" required placeholder="Hostname ou IP" />
+            </label>
+
+            <div style="display:flex;gap:8px;margin-top:12px">
+                <button type="submit" class="btn btn-primary">Salvar</button>
+                <button type="button" id="addAssetCancel" class="btn">Cancelar</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<style>
+    .modal{ position:fixed; inset:0; display:flex; align-items:center; justify-content:center; z-index:40 }
+    .modal-backdrop{ position:absolute; inset:0; background:rgba(6,12,24,0.4) }
+    .modal-card{ position:relative; background:#fff; padding:18px; border-radius:8px; width:420px; box-shadow:0 8px 32px rgba(0,0,0,0.12) }
+    .modal-card h3{ margin:0 0 12px }
+    .modal-card label{ display:block; margin-bottom:8px; font-size:0.9rem }
+    .modal-card input, .modal-card select{ width:100%; padding:8px 10px; border:1px solid #e6eefc; border-radius:6px }
+</style>

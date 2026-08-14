@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+
+<meta charset="UTF-8">
+
+<title>PingMonitor — Design System Variant</title>
+
+<!-- Existing CSS (kept) -->
+<link rel="stylesheet" href="/assets/css/layout.css">
+<link rel="stylesheet" href="/assets/css/cards.css">
+<link rel="stylesheet" href="/assets/css/status.css">
+<link rel="stylesheet" href="/assets/css/sidebar.css">
+
+<!-- Inter font -->
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,0..200" rel="stylesheet"/>
+
+<!-- New design system overrides (non-destructive) -->
+<link rel="stylesheet" href="/assets/css/design-system.css">
+<link rel="stylesheet" href="/assets/css/components.css">
+
+</head>
+
+<body>
+
+<div class="app">
+
+    <div data-include="sidebar.html"></div>
+
+    <main class="content">
+
+        <div data-include="header.html"></div>
+
+        <section class="cards">
+
+            <div class="card">
+                <h3>Total de Ativos</h3>
+                <div id="totalAtivos">0</div>
+            </div>
+
+            <div class="card card-online">
+                <h3>Ativos Online</h3>
+                <div id="totalOnline">0</div>
+            </div>
+
+            <div class="card card-offline">
+                <h3>Ativos Offline</h3>
+                <div id="totalOffline">0</div>
+            </div>
+
+        </section>
+
+        <section id="conteudo"></section>
+
+    </main>
+
+    <div data-include="rightpanel.html"></div>
+
+</div>
+
+<script src="/assets/js/components.js"></script>
+<script src="/assets/js/dashboard.js"></script>
+<script src="/assets/js/search.js"></script>
+
+</body>
+</html>

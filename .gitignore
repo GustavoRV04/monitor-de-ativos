@@ -1,0 +1,18 @@
+# Python
+__pycache__/
+*.pyc
+
+# VS Code
+.vscode/
+
+# Ambiente virtual
+.venv/
+
+# Arquivos gerados pelo sistema
+data/resultado_ping.json
+data/ping_detalhado.json
+data/eventos.json
+data/monitor.lock
+
+# Logs
+*.log

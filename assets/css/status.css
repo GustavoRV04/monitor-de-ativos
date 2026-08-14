@@ -1,0 +1,19 @@
+.unidade-card{
+    background:white;
+    border-radius:12px;
+    padding:20px;
+    margin-bottom:20px;
+    box-shadow:0 2px 8px rgba(0,0,0,.08);
+}
+
+.equipamento{
+    padding:8px 0;
+}
+
+.online{
+    color:#1E8E3E;
+}
+
+.offline{
+    color:#C62828;
+}

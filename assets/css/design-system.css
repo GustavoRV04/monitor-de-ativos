@@ -1,0 +1,54 @@
+:root{
+    --surface: #f8f9ff;
+    --surface-container-lowest: #ffffff;
+    --on-surface: #0b1c30;
+    --primary: #003974;
+    --primary-container: #00509d;
+    --success: #28A745;
+    --danger: #DC3545;
+    --muted: #6b7280;
+    --card-border: #e6eef8;
+}
+
+/* Base reset for design system overrides */
+html,body{height:100%;}
+body{
+    background:var(--surface);
+    color:var(--on-surface);
+    font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    margin:0;
+}
+
+.app{display:flex;min-height:100vh}
+.sidebar{
+    width:260px;
+    background:var(--surface-container-lowest);
+    border-right:1px solid var(--card-border);
+    padding:20px;
+    box-sizing:border-box;
+}
+.logo{font-weight:700;color:var(--primary);margin-bottom:12px}
+
+.content{flex:1;padding:28px}
+.topbar{display:flex;align-items:center;gap:12px;margin-bottom:20px}
+.topbar #busca{width:480px;padding:10px 12px;border:1px solid var(--card-border);border-radius:6px}
+
+.cards{display:flex;gap:16px;margin-bottom:18px}
+.card{background:var(--surface-container-lowest);border:1px solid var(--card-border);padding:16px;border-radius:8px;flex:1}
+.card h3{margin:0 0 8px 0;font-size:13px;color:var(--muted);}
+.card div{font-size:20px;font-weight:600}
+.card-online{border-left:4px solid var(--success)}
+.card-offline{border-left:4px solid var(--danger)}
+
+#conteudo{display:block}
+
+.painel-detalhes{width:320px;padding:18px;border-left:1px solid var(--card-border);background:var(--surface-container-lowest)}
+
+/* Small responsive tweak (keep simple) */
+@media(max-width:900px){
+    .sidebar{display:none}
+    .topbar #busca{width:100%}
+}
+
+/* Utility */
+.muted{color:var(--muted)}

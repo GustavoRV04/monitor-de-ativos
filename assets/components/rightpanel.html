@@ -1,0 +1,95 @@
+<aside id="detalhesEquipamento" class="painel-detalhes-inner">
+    <h3>Equipamento</h3>
+    <div class="detalhes-body">
+        Selecione um equipamento
+    </div>
+
+    <div class="right-section" style="margin-top:16px">
+        <div class="info-card">
+            <div class="card-title">📊 Device Metrics</div>
+            <div class="progress-item">
+                <div class="progress-label"><span>Uptime</span><span id="uptimeVal">-</span></div>
+                <div class="progress-track"><span class="progress-fill" id="uptimeFill" style="width:60%"></span></div>
+            </div>
+            <div class="progress-item">
+                <div class="progress-label"><span>CPU Load</span><span id="cpuVal">-</span></div>
+                <div class="progress-track"><span class="progress-fill" id="cpuFill" style="width:20%"></span></div>
+            </div>
+            <div class="progress-item">
+                <div class="progress-label"><span>RAM Usage</span><span id="ramVal">-</span></div>
+                <div class="progress-track"><span class="progress-fill" id="ramFill" style="width:40%"></span></div>
+            </div>
+        </div>
+        <div class="info-card" style="margin-top:12px">
+
+        <div class="card-title">
+            📡 Ping Summary
+        </div>
+
+        <div class="ping-summary-row">
+            <strong>Status:</strong>
+            <span id="pingStatus">-</span>
+        </div>
+
+        <div class="ping-summary-row">
+            <strong>Current:</strong>
+            <span id="pingCurrent">-</span> ms
+        </div>
+
+        <div class="ping-summary-row">
+            <strong>Average:</strong>
+            <span id="pingAvg">-</span> ms
+        </div>
+
+        <div class="ping-summary-row">
+            <strong>Min:</strong>
+            <span id="pingMin">-</span> ms
+        </div>
+
+        <div class="ping-summary-row">
+            <strong>Max:</strong>
+            <span id="pingMax">-</span> ms
+        </div>
+
+        <div class="ping-summary-row">
+            <strong>TTL:</strong>
+            <span id="ttlVal">-</span>
+        </div>
+
+        <div class="ping-summary-row">
+            <strong>Last Via:</strong>
+            <span id="pingVia">-</span>
+        </div>
+
+        <hr style="margin:10px 0">
+
+        <div class="ping-summary-row">
+            <strong>Packets Sent:</strong>
+            <span id="packetsSent">-</span>
+        </div>
+
+        <div class="ping-summary-row">
+            <strong>Packets Received:</strong>
+            <span id="packetsReceived">-</span>
+        </div>
+
+        <div class="ping-summary-row">
+            <strong>Packets Lost:</strong>
+            <span id="packetsLost">-</span>
+        </div>
+
+        <div class="ping-summary-row">
+            <strong>Loss:</strong>
+            <span id="pingLoss">-</span> %
+        </div>
+
+    </div>
+
+        <div class="alerts-card" style="margin-top:12px">
+            <div class="card-title">⚠️ Latest Alerts</div>
+            <div class="alert-box" id="alertsBox">System Healthy — No recent alerts recorded.</div>
+            <button class="secondary-btn" style="margin-top:12px">View Full Details</button>
+        </div>
+    </div>
+
+</aside>

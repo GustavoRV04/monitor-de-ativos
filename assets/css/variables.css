@@ -1,0 +1,21 @@
+:root {
+
+  --color-primary: #003974;
+  --color-primary-container: #00509d;
+
+  --color-success: #28A745;
+  --color-danger: #DC3545;
+  --color-warning: #FC9910;
+
+  --bg-page: #F8F9FF;
+  --bg-sidebar: #FFFFFF;
+
+  --card-border: #E2E8F0;
+
+  --radius: 4px;
+
+  --sidebar-width: 260px;
+
+  --font-family: "Inter", sans-serif;
+
+}

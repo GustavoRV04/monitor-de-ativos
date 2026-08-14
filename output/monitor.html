@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Monitor de Ping</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/assets/css/monitor.css">
+</head>
+
+<body>
+    <div class="app-shell">
+        <div data-include="header.html"></div>
+
+        <div class="workspace">
+            <div data-include="sidebar.html"></div>
+
+            <main class="main">
+                <div class="header-panel">
+                    <div>
+                        <div class="page-kicker" id="pageKicker">Inventory / - / -</div>
+                        <h1 class="page-title" id="host">Carregando...</h1>
+                        <div class="meta-row">
+                            <span id="hostIp">IP: -</span>
+                            <span id="deviceType">Dispositivo: -</span>
+                        </div>
+                    </div>
+                    <div class="status-pill" id="hostStatus">Online</div>
+                </div>
+
+                <div class="metric-grid">
+                    <section class="terminal-panel">
+                        <div class="terminal-header">
+                            <span>ping <span id="hostAlias">host</span> -t</span>
+                            <span>Live</span>
+                        </div>
+                        <div class="terminal-body" id="historico">
+                            <div class="terminal-line">Aguardando dados do host...</div>
+                        </div>
+                    </section>
+
+                    <aside class="side-stack">
+                        <div data-include="rightpanel.html"></div>
+                    </aside>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <script src="/assets/js/components.js"></script>
+    <script src="/assets/js/monitor.js"></script>
+</body>
+
+</html>

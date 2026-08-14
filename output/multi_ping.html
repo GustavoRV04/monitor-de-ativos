@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Multi Ping - NetAssets Core</title>
+    <style>
+        :root {
+            --bg: #f3f6fb;
+            --panel: #ffffff;
+            --panel-soft: #f5f8ff;
+            --line: #dfe9f5;
+            --primary: #0b3d80;
+            --primary-strong: #003974;
+            --primary-soft: #eaf3ff;
+            --text: #15253a;
+            --muted: #59657b;
+            --success: #1f9d6d;
+            --success-soft: #dff7ee;
+            --warning: #d48b1c;
+            --warning-soft: #fff1d6;
+            --error: #d64b4b;
+            --error-soft: #fde7eb;
+            --shadow: 0 8px 20px rgba(14, 31, 53, 0.06);
+        }
+
+        * { box-sizing: border-box; }
+        html, body { margin: 0; height: 100%; font-family: Inter, Arial, sans-serif; background: var(--bg); color: var(--text); }
+        /* Allow normal page scrolling so long lists of assets can be reached */
+        body { overflow: auto; }
+
+        .app {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        .sidebar {
+            width: 260px;
+            background: #f8f9fd;
+            border-right: 1px solid var(--line);
+            padding: 18px 14px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 10px 16px;
+            font-weight: 800;
+            letter-spacing: -0.03em;
+            color: var(--primary-strong);
+        }
+
+        .brand-mark {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            background: var(--primary-soft);
+            display: grid;
+            place-items: center;
+            color: var(--primary);
+            font-size: 18px;
+        }
+
+        .nav {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            margin-top: 14px;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 12px;
+            border-radius: 8px;
+            color: var(--muted);
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .nav-item.active {
+            background: var(--primary-soft);
+            color: var(--primary);
+            border-left: 3px solid var(--primary);
+            padding-left: 9px;
+        }
+
+        .content {
+            flex: 1;
+            padding: 22px 28px 28px;
+            overflow: auto;
+        }
+
+        .topbar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            margin-bottom: 18px;
+            background: rgba(255,255,255,0.6);
+            border: 1px solid rgba(223,233,245,0.9);
+            border-radius: 12px;
+            padding: 10px 14px;
+            min-height: 60px;
+        }
+
+        .search-wrap {
+            flex: 1;
+            max-width: 520px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        .search-wrap input {
+            width: 100%;
+            border: 1px solid var(--line);
+            background: #f9fbff;
+            border-radius: 8px;
+            padding: 10px 14px 10px 38px;
+            font-size: 0.96rem;
+            color: var(--text);
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--muted);
+            font-size: 18px;
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .icon-btn {
+            border: 1px solid var(--line);
+            background: var(--panel);
+            color: var(--muted);
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: grid;
+            place-items: center;
+        }
+
+        .avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #d6e6ff, #abc7ed);
+            border: 2px solid rgba(11,61,128,0.2);
+        }
+
+        .header-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: end;
+            gap: 16px;
+            margin-bottom: 18px;
+        }
+
+        .title-wrap h1 {
+            margin: 0;
+            font-size: clamp(2rem, 3vw, 3rem);
+            line-height: 1.1;
+            letter-spacing: -0.04em;
+            font-weight: 800;
+            color: var(--text);
+        }
+
+        .subtitle {
+            color: var(--muted);
+            font-size: 1.02rem;
+        }
+
+        .header-actions-main {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+        }
+
+        .btn {
+            border: 1px solid var(--line);
+            background: var(--panel);
+            color: var(--text);
+            border-radius: 8px;
+            padding: 10px 16px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .btn.primary {
+            background: var(--primary-strong);
+            color: #fff;
+            border-color: var(--primary-strong);
+            box-shadow: var(--shadow);
+        }
+
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 20px;
+            align-items: stretch;
+        }
+
+        .asset-card {
+            background: var(--panel);
+            border: 1px solid var(--line);
+            border-radius: 12px;
+            padding: 16px 16px 14px;
+            box-shadow: var(--shadow);
+            min-height: 280px;
+            display: flex;
+            position: relative; /* keep children contained */
+            overflow: hidden; /* ensure badges or decorative elements don't escape the card */
+            flex-direction: column;
+        }
+
+        .asset-card.warning { border-color: #f4c35d; }
+        .asset-card.error { border-color: #ef8d8d; background: #fff6f7; }
+
+        .asset-head {
+            display: flex;
+            align-items: center; /* align badge vertically with title to avoid overflow */
+            justify-content: space-between;
+            gap: 12px;
+            margin-bottom: 14px;
+        }
+
+        .name {
+            margin: 0;
+            font-size: 1.05rem;
+            font-weight: 800;
+            letter-spacing: -0.03em;
+        }
+
+        .ip {
+            display: block;
+            margin-top: 4px;
+            font-size: 0.85rem;
+            color: var(--muted);
+            font-weight: 600;
+        }
+
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 5px 8px;
+            border-radius: 999px;
+            font-size: 0.72rem;
+            font-weight: 700;
+            border: 1px solid transparent;
+            white-space: nowrap;
+            flex-shrink: 0; /* prevent the badge from shrinking and overlapping text */
+            box-sizing: border-box;
+            line-height: 1;
+            max-height: 28px;
+            padding-top: 4px;
+            padding-bottom: 4px;
+        }
+
+        .status-ONLINE {
+            background: var(--success-soft);
+            color: var(--success);
+            border-color: rgba(31,157,109,0.14);
+        }
+
+        .status-WARNING {
+            background: var(--warning-soft);
+            color: var(--warning);
+            border-color: rgba(212,139,28,0.18);
+        }
+
+        .status-OFFLINE {
+            background: var(--error-soft);
+            color: var(--error);
+            border-color: rgba(214,75,75,0.18);
+        }
+
+        .dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            display: inline-block;
+        }
+
+        .dot.ONLINE { background: var(--success); }
+        .dot.WARNING { background: var(--warning); }
+        .dot.OFFLINE { background: var(--error); }
+
+        .sparkline-box {
+            height: 84px;
+            border-radius: 10px;
+            border: 1px solid rgba(223,233,245,0.75);
+            background: #f9fbff;
+            display: flex;
+            align-items: end;
+            justify-content: center;
+            overflow: hidden;
+            margin-bottom: 14px;
+        }
+
+        .sparkline-svg {
+            width: 100%;
+            height: 100%;
+            display: block;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 10px;
+            padding-top: 12px;
+            border-top: 1px solid rgba(223,233,245,0.8);
+        }
+
+        .metric {
+            text-align: center;
+        }
+
+        .metric-label {
+            display: block;
+            margin-bottom: 4px;
+            font-size: 0.72rem;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            color: var(--muted);
+            font-weight: 700;
+        }
+
+        .metric-value {
+            font-size: 0.95rem;
+            font-weight: 800;
+            letter-spacing: -0.02em;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 100%;
+            display: inline-block;
+        }
+
+        .asset-card .cta {
+            margin-top: auto;
+            width: 100%;
+            border: 1px solid var(--primary);
+            border-radius: 8px;
+            background: transparent;
+            color: var(--primary);
+            padding: 9px 12px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .asset-head .name {
+            max-width: 220px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            display: block;
+        }
+
+        .asset-card.error .cta {
+            background: var(--error);
+            border-color: var(--error);
+            color: #fff;
+        }
+
+        .empty {
+            background: var(--panel);
+            border: 1px dashed var(--line);
+            border-radius: 12px;
+            color: var(--muted);
+            padding: 24px;
+            text-align: center;
+            font-size: 1rem;
+        }
+
+        @media (max-width: 720px) {
+            body { overflow: auto; }
+            .app { flex-direction: column; }
+            .sidebar { display: none; }
+            .topbar { padding: 8px 10px; }
+            .header-row { flex-direction: column; align-items: flex-start; }
+            .asset-card { min-height: 260px; }
+            .metric-value { font-size: 0.9rem; }
+        }
+    </style>
+</head>
+<body>
+    <div class="app">
+        <aside class="sidebar">
+            <div class="brand">
+                <div class="brand-mark">◧</div>
+                <div>
+                    <div style="font-size:1.1rem;">Network Ops</div>
+                    <div style="font-size:0.72rem; color: var(--muted);">Enterprise Infrastructure</div>
+                </div>
+            </div>
+
+            <nav class="nav">
+                <a class="nav-item" href="/">Dashboard</a>
+                <a class="nav-item active" href="/multi-ping/PR/7445-0%20-%20EVENTOS">Multi-Ping</a>
+                <a class="nav-item" href="#">Network Nodes</a>
+                <a class="nav-item" href="#">Asset Inventory</a>
+                <a class="nav-item" href="#">Terminal</a>
+            </nav>
+        </aside>
+
+        <main class="content">
+            <div class="topbar">
+                <div style="font-weight:800; color: var(--primary-strong); font-size:1.05rem;">NetAssets Core</div>
+                <div class="search-wrap">
+                    <span class="search-icon">⌕</span>
+                    <input id="searchInput" type="text" placeholder="Search resources..." />
+                </div>
+                <div class="header-actions">
+                    <button class="icon-btn" title="Notifications">🔔</button>
+                    <button class="icon-btn" title="Settings">⚙️</button>
+                    <div class="avatar"></div>
+                </div>
+            </div>
+
+            <div class="header-row">
+                <div class="title-wrap">
+                    <h1 id="pageTitle">Monitoramento Multi-Ping</h1>
+                    <div id="pageSubtitle" class="subtitle">Real-time latency monitoring for critical network assets.</div>
+                </div>
+                <div class="header-actions-main">
+                    <button class="btn" id="clearBtn">Clear All</button>
+                    <button class="btn primary" id="addBtn">+ Add Asset</button>
+                </div>
+            </div>
+
+            <section id="cards" class="cards"></section>
+        </main>
+    </div>
+
+    <script src="/assets/js/multi_ping.js"></script>
+</body>
+</html>
