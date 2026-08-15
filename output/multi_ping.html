@@ -206,10 +206,15 @@
 
         .cards {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            /* Trava em 3 colunas fixas: */
+            grid-template-columns: repeat(3, minmax(0, 1fr));
             gap: 20px;
             align-items: stretch;
         }
+
+        /* Responsividade para não quebrar em telas menores */
+        @media (max-width: 1200px) { .cards { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+        @media (max-width: 768px) { .cards { grid-template-columns: 1fr; } }
 
         .asset-card {
             background: var(--panel);
@@ -229,10 +234,28 @@
 
         .asset-head {
             display: flex;
-            align-items: center; /* align badge vertically with title to avoid overflow */
+            align-items: flex-start;
             justify-content: space-between;
             gap: 12px;
             margin-bottom: 14px;
+            min-width: 0; /* Permite esmagar o conteúdo se necessário */
+        }
+
+        /* Força a área do texto a respeitar o limite */
+        .asset-head > div:first-child {
+            min-width: 0;
+            flex: 1;
+        }
+
+        .asset-head .name {
+            margin: 0;
+            font-size: 1.05rem;
+            font-weight: 800;
+            letter-spacing: -0.03em;
+            /* Adicione estas 3 linhas para cortar nomes gigantes: */
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
 
         .name {

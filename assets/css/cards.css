@@ -1,48 +1,23 @@
-.cards{
-    display:flex;
-    gap:20px;
-    margin-bottom:25px;
+#conteudo {
+    display: grid !important;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 24px;
+    align-items: stretch !important; 
 }
 
-.card{
-    background:white;
-    padding:20px;
-    min-width:250px;
-    border-radius:12px;
-    box-shadow:0 2px 8px rgba(0,0,0,.08);
+.unidade-card {
+    background: #ffffff;
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 2px 8px rgba(0,0,0,.08);
+    display: flex !important;
+    flex-direction: column !important;
+    height: 100% !important; 
+    max-height: 480px !important; 
 }
 
-.card h3{
-    margin-bottom:10px;
-}
-
-#totalAtivos,
-#totalOnline,
-#totalOffline{
-    font-size:36px;
-    font-weight:bold;
-}
-
-.card-online div{
-    color:#1E8E3E;
-}
-
-.card-offline div{
-    color:#C62828;
-}
-
-#conteudo{
-    display:grid;
-    grid-template-columns:
-        repeat(auto-fill,minmax(380px,1fr));
-    gap:20px;
-}
-
-.unidade-card{
-    background:white;
-    border-radius:12px;
-    padding:20px;
-    box-shadow:0 2px 8px rgba(0,0,0,.08);
+.unidade-card:hover {
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
 }
 
 .card-header{
@@ -50,6 +25,46 @@
     justify-content:space-between;
     align-items:center;
     margin-bottom:15px;
+    flex-shrink: 0 !important; 
+}
+
+.unidade-card .equipamentos {
+    padding: 0 8px 0 0; 
+    flex: 1 1 auto !important; 
+    min-height: 0 !important; 
+    overflow-y: auto !important;
+    display: flex;
+    flex-direction: column;
+    gap: 12px; 
+}
+
+.unidade-card .equipamentos::-webkit-scrollbar { width: 6px; }
+.unidade-card .equipamentos::-webkit-scrollbar-track { background: #f1f5f9; border-radius: 8px; }
+.unidade-card .equipamentos::-webkit-scrollbar-thumb { background: #c2c6d3; border-radius: 8px; }
+.unidade-card .equipamentos::-webkit-scrollbar-thumb:hover { background: #9aa0b1; }
+
+.unidade-card .card-footer {
+    padding-top: 16px;
+    border-top: 1px solid #c2c6d3;
+    margin-top: 16px !important; 
+    flex-shrink: 0 !important; 
+}
+
+.unidade-card .card-footer button {
+    width: 100%;
+    padding: 8px 0;
+    border: 1px solid #003974;
+    color: #003974;
+    border-radius: 4px;
+    background: transparent;
+    font-weight: 600;
+    font-size: 12px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.unidade-card .card-footer button:hover {
+    background-color: #eff4ff; 
 }
 
 .card-header h3{
@@ -65,11 +80,41 @@
     font-weight:bold;
 }
 
-.equipamento{
-    padding:10px;
-    margin-bottom:6px;
-    border-radius:6px;
-    background:#f8f9fb;
+
+.equipamento {
+    padding: 10px;
+    border-radius: 6px;
+    background: #f8f9fb;
+    flex-shrink: 0 !important; 
+    
+    box-sizing: border-box;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 8px;
+    overflow: hidden; 
+}
+
+.equipamento .left {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    min-width: 0; 
+    flex: 1; 
+}
+
+.equipamento .left div {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.equipamento .name, .equipamento .ip {
+    display: block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
 .online{
@@ -78,4 +123,66 @@
 
 .offline{
     border-left:4px solid #c62828;
+}
+
+/* 
+   FORÇAR 3 COLUNAS EM QUALQUER GRID (Painel e Multi-Ping)
+*/
+
+.cards, #conteudo {
+    display: grid !important;
+    /* Altera o repeat(auto-fit, minmax(...)) para fixar 3 colunas iguais */
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important; 
+    gap: 20px;
+    align-items: stretch !important;
+}
+
+@media (max-width: 1200px) {
+    .cards, #conteudo {
+        grid-template-columns: repeat(2, minmax(0, 1fr)) !important; 
+    }
+}
+@media (max-width: 768px) {
+    .cards, #conteudo {
+        grid-template-columns: 1fr !important; 
+    }
+}
+
+
+.status-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 5px 8px;
+    border-radius: 999px;
+    font-size: 0.72rem;
+    font-weight: 700;
+    border: 1px solid transparent;
+    white-space: nowrap;
+    
+    flex-shrink: 0 !important; 
+    box-sizing: border-box;
+}
+
+.asset-head {
+    display: flex;
+    align-items: flex-start; 
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 14px;
+}
+
+.asset-head > div:first-child {
+    min-width: 0; 
+    flex: 1;
+}
+
+.asset-head .name {
+    margin: 0;
+    font-size: 1.05rem;
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }

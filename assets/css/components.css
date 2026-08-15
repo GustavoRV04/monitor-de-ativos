@@ -456,3 +456,24 @@ body {
 
 
 }
+
+/* FORÇA O CORTE DE TEXTOS LONGOS NO PAINEL E PROTEGE O STATUS */
+.unidade-card > .equipamento {
+    min-width: 0 !important;
+}
+
+.equipamento .left {
+    min-width: 0 !important;
+    flex: 1 !important;
+}
+
+.equipamento .left div {
+    min-width: 0 !important;
+    overflow: hidden !important;
+    white-space: nowrap !important;
+    text-overflow: ellipsis !important;
+}
+
+.equipamento .meta {
+    flex-shrink: 0 !important; /* Protege a tag 'Offline' como um escudo */
+}
