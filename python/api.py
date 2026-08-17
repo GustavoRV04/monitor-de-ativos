@@ -99,7 +99,352 @@ def monitorar(host):
         "status": "ok",
         "host": host
     }
+@app.route(
+    "/encerrar-monitor",
+    methods=["POST"]
+)
+def encerrar_monitor():
 
+    global processo_ping
+
+    if processo_ping:
+
+        try:
+
+            if processo_ping.poll() is None:
+                processo_ping.kill()
+
+        except Exception:
+            pass
+
+    try:
+
+        lock_path = (
+            BASE_DIR /
+            "data" /
+            "monitor.lock"
+        )
+
+        if lock_path.exists():
+            lock_path.unlink()
+
+    except Exception:
+        pass
+
+    print(
+        "Monitor encerrado"
+    )
+
+    return {
+        "status": "ok"
+    }
+
+@app.route(
+    "/api/ping-manual",
+    methods=["POST"]
+)
+def ping_manual():
+
+    try:
+
+        payload = request.get_json()
+
+        host = (
+            payload.get("host", "")
+            .strip()
+        )
+
+        if not host:
+
+            return jsonify({
+                "erro":
+                "host_vazio"
+            }), 400
+
+        resultado = subprocess.run(
+            [
+                "ping",
+                "-n",
+                "1",
+                host
+            ],
+            capture_output=True,
+            text=True,
+            timeout=3
+        )
+
+        saida = (
+            resultado.stdout
+            or ""
+        )
+
+        import re
+
+        latencia = None
+        ttl = None
+
+        m = re.search(
+            r"(\d+)\s*ms",
+            saida,
+            re.IGNORECASE
+        )
+
+        if m:
+
+            latencia = int(
+                m.group(1)
+            )
+
+        ttl_match = re.search(
+            r"ttl=(\d+)",
+            saida,
+            re.IGNORECASE
+        )
+
+        if ttl_match:
+
+            ttl = int(
+                ttl_match.group(1)
+            )
+
+        return jsonify({
+
+            "host":
+                host,
+
+            "status":
+                "ONLINE"
+                if resultado.returncode == 0
+                else "OFFLINE",
+
+            "latencia":
+                latencia,
+
+            "ttl":
+                ttl
+
+        })
+
+    except Exception as erro:
+
+        return jsonify({
+
+            "status":
+                "ERROR",
+
+            "erro":
+                str(erro)
+
+        }), 500
+
+
+@app.route(
+    "/api/remover_ativo",
+    methods=["POST"]
+)
+
+def remover_ativo():
+    import json
+    from datetime import datetime
+
+    try:
+
+        payload = request.get_json(force=True)
+
+        host = str(
+            payload.get("host", "")
+        ).strip()
+
+        motivo = str(
+            payload.get("motivo", "")
+        ).strip()
+
+        if not host:
+
+            return jsonify({
+                "erro": "host_vazio"
+            }), 400
+
+        if not motivo:
+
+            return jsonify({
+                "erro": "motivo_obrigatorio"
+            }), 400
+
+        inv_file = (
+            BASE_DIR /
+            "data" /
+            "inventario.json"
+        )
+
+        inv_org_file = (
+            BASE_DIR /
+            "data" /
+            "inventario_organizado.json"
+        )
+
+        desmob_file = (
+            BASE_DIR /
+            "data" /
+            "desmobilizados.json"
+        )
+
+        with open(
+            inv_file,
+            "r",
+            encoding="utf-8"
+        ) as f:
+
+            inventario = json.load(f)
+
+        with open(
+            inv_org_file,
+            "r",
+            encoding="utf-8"
+        ) as f:
+
+            inventario_org = json.load(f)
+
+        ativo = next(
+            (
+                x
+                for x in inventario
+                if x.get("host") == host
+            ),
+            None
+        )
+
+        if not ativo:
+
+            return jsonify({
+                "erro": "ativo_nao_encontrado"
+            }), 404
+
+        desmobilizados = []
+
+        if desmob_file.exists():
+
+            try:
+
+                with open(
+                    desmob_file,
+                    "r",
+                    encoding="utf-8"
+                ) as f:
+
+                    desmobilizados = json.load(f)
+
+            except Exception:
+
+                desmobilizados = []
+
+        desmobilizados.append({
+
+            "host":
+                ativo.get("host"),
+
+            "equipamento":
+                ativo.get("equipamento"),
+
+            "estado":
+                ativo.get("estado"),
+
+            "unidade":
+                ativo.get("unidade"),
+
+            "motivo":
+                motivo,
+
+            "data":
+                datetime.now().strftime(
+                    "%d/%m/%Y %H:%M:%S"
+                )
+
+        })
+
+        with open(
+            desmob_file,
+            "w",
+            encoding="utf-8"
+        ) as f:
+
+            json.dump(
+                desmobilizados,
+                f,
+                indent=4,
+                ensure_ascii=False
+            )
+
+        inventario = [
+
+            x
+
+            for x in inventario
+
+            if x.get("host") != host
+
+        ]
+
+        estado = ativo.get("estado")
+        unidade = ativo.get("unidade")
+
+        if (
+            estado in inventario_org
+            and
+            unidade in inventario_org[estado]
+        ):
+
+            inventario_org[estado][unidade] = [
+
+                x
+
+                for x in inventario_org[estado][unidade]
+
+                if x.get("host") != host
+
+            ]
+
+        with open(
+            inv_file,
+            "w",
+            encoding="utf-8"
+        ) as f:
+
+            json.dump(
+                inventario,
+                f,
+                indent=4,
+                ensure_ascii=False
+            )
+
+        with open(
+            inv_org_file,
+            "w",
+            encoding="utf-8"
+        ) as f:
+
+            json.dump(
+                inventario_org,
+                f,
+                indent=4,
+                ensure_ascii=False
+            )
+
+        return jsonify({
+
+            "status": "ok",
+
+            "host": host
+
+        })
+
+    except Exception as erro:
+
+        return jsonify({
+
+            "erro": str(erro)
+
+        }), 500
 
 @app.route('/api/add_asset', methods=['POST'])
 def api_add_asset():

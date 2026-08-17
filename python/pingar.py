@@ -21,6 +21,12 @@ ARQ_EVENTOS = (
     "eventos.json"
 )
 
+ARQ_HISTORICO = (
+    BASE_DIR /
+    "data" /
+    "historico_ping.json"
+)
+
 with open(
     BASE_DIR / "data" / "inventario.json",
     "r",
@@ -45,6 +51,24 @@ if ARQ_RESULTADO.exists():
     except Exception:
 
         resultado_anterior = []
+
+historicos = {}
+
+if ARQ_HISTORICO.exists():
+
+    try:
+
+        with open(
+            ARQ_HISTORICO,
+            "r",
+            encoding="utf-8"
+        ) as f:
+
+            historicos = json.load(f)
+
+    except Exception:
+
+        historicos = {}
 
 
 mapa_anterior = {
@@ -156,6 +180,21 @@ def testar(ativo):
         if ttls:
             ttl = ttls[0]
 
+        historico = historicos.get(
+            host,
+            []
+        )
+
+        if latencia is not None:
+
+            historico.append(
+                latencia
+        )
+
+        historico = historico[-30:]
+
+        historicos[host] = historico
+
         return {
 
         "equipamento":
@@ -182,6 +221,9 @@ def testar(ativo):
 
         "latencia":
             latencia,
+
+        "historico":
+            historico,
 
         "ttl":
             ttl,
@@ -324,6 +366,19 @@ with open(
     encoding="utf-8"
 ) as f:
     json.dump(resultados, f, indent=4, ensure_ascii=False)
+
+with open(
+    ARQ_HISTORICO,
+    "w",
+    encoding="utf-8"
+) as f:
+
+    json.dump(
+        historicos,
+        f,
+        indent=4,
+        ensure_ascii=False
+    )
 
 eventos_existentes = []
 

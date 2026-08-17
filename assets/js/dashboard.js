@@ -1,6 +1,7 @@
 let inventarioGlobal = {};
 let statusGlobal = {};
 let estadoAtual = null;
+let hostDesmobilizacao = null;
 
 function generateSparkline(total){
     // simple deterministic sparkline based on total value
@@ -377,6 +378,12 @@ function mostrarDetalhes(host){
         >
             Monitorar Ping
         </button>
+
+        <button
+            onclick="abrirDesmobilizacao('${host}')"
+            style=" margin-top:10px; background:#c62828; color:white;">
+            🗑 Desmobilizar Ativo
+</button>
     `;
 };
 
@@ -502,6 +509,262 @@ async function carregarEventos() {
         );
 
     }
+
+}
+
+function inicializarPingManual() {
+
+    const modal =
+        document.getElementById(
+            "pingModal"
+        );
+
+    const btnManual =
+        document.getElementById(
+            "manualPingBtn"
+        );
+
+    if(!btnManual || !modal)
+        return;
+
+    btnManual.onclick = () => {
+
+        modal.style.display =
+            "block";
+
+    };
+    const fechar =
+        document.getElementById(
+            "fecharPingModal"
+        );
+
+    if(fechar){
+
+        fechar.onclick = () => {
+
+            modal.style.display =
+                "none";
+
+        };
+
+    }
+
+    const executarBtn =
+    document.getElementById(
+        "executarPingBtn"
+    );
+
+if(executarBtn){
+
+    executarBtn.onclick =
+        async () => {
+
+        const host =
+            document
+                .getElementById(
+                    "manualPingHost"
+                )
+                .value
+                .trim();
+
+        if(!host)
+            return;
+
+        try{
+
+            await fetch(
+                "http://127.0.0.1:5000/monitorar/" +
+                encodeURIComponent(host)
+            );
+
+            localStorage.setItem(
+                "hostMonitorado",
+                host
+            );
+
+            document.getElementById(
+                "pingModal"
+            ).style.display = "none";
+
+            window.open(
+                "http://127.0.0.1:5000/monitor",
+                "_blank"
+            );
+
+        }
+        catch(erro){
+
+            console.error(
+                erro
+            );
+
+            alert(
+                "Erro ao iniciar monitor."
+            );
+
+        }
+
+    };
+}
+
+
+}
+
+if (window.__componentsLoaded) {
+
+    inicializarPingManual();
+    inicializarDesmobilizacao();
+
+} else {
+
+    window.addEventListener(
+        'components-ready',
+        () => {
+
+            inicializarPingManual();
+            inicializarDesmobilizacao();
+
+        }
+    );
+
+}
+
+function abrirDesmobilizacao(host){
+
+    hostDesmobilizacao = host;
+
+    document.getElementById(
+        "desmobilizarHost"
+    ).innerHTML =
+        `<b>Host:</b> ${host}`;
+
+    document.getElementById(
+        "motivoDesmobilizacao"
+    ).value = "";
+
+    document.getElementById(
+        "desmobilizarModal"
+    ).style.display =
+        "block";
+
+}
+
+async function desmobilizarAtivo(
+    host,
+    motivo
+){
+
+    try{
+
+        const resp =
+            await fetch(
+                "/api/remover_ativo",
+                {
+                    method:"POST",
+
+                    headers:{
+                        "Content-Type":
+                        "application/json"
+                    },
+
+                    body:
+                    JSON.stringify({
+                        host,
+                        motivo
+                    })
+                }
+            );
+
+        const json =
+            await resp.json();
+
+        if(!resp.ok){
+
+            alert(
+                json.erro ||
+                "Erro ao remover ativo."
+            );
+
+            return;
+        }
+
+        alert(
+            "Ativo desmobilizado com sucesso."
+        );
+
+        carregar();
+
+    }
+    catch(erro){
+
+        console.error(
+            erro
+        );
+
+        alert(
+            "Erro ao conectar com a API."
+        );
+
+    }
+
+}
+
+function inicializarDesmobilizacao(){
+
+    const modal =
+        document.getElementById(
+            "desmobilizarModal"
+        );
+
+    const cancelar =
+        document.getElementById(
+            "cancelarDesmobilizacao"
+        );
+
+    const confirmar =
+        document.getElementById(
+            "confirmarDesmobilizacao"
+        );
+
+    if(!modal)
+        return;
+
+    cancelar.onclick = () => {
+
+        modal.style.display =
+            "none";
+
+    };
+
+    confirmar.onclick = async () => {
+
+        const motivo =
+            document
+                .getElementById(
+                    "motivoDesmobilizacao"
+                )
+                .value
+                .trim();
+
+        if(!motivo){
+
+            alert(
+                "Informe o motivo da desmobilização."
+            );
+
+            return;
+
+        }
+
+        modal.style.display =
+            "none";
+
+        await desmobilizarAtivo(
+            hostDesmobilizacao,
+            motivo
+        );
+
+    };
 
 }
 

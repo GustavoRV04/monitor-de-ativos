@@ -262,3 +262,14 @@ if(window.__componentsLoaded){
 } else {
     window.addEventListener('components-ready', startMonitor);
 }
+
+window.addEventListener(
+    "pagehide",
+    () => {
+
+        navigator.sendBeacon(
+            "/encerrar-monitor"
+        );
+
+    }
+);

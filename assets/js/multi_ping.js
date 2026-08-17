@@ -56,7 +56,7 @@ function statusToClass(status){
 
 }
 
-function buildSparkline(values) {
+function buildSparkline(values,status = 'ONLINE') {
     const safeValues = values.filter(v => Number.isFinite(Number(v)));
     if (!safeValues.length) {
         return '<svg class="sparkline-svg" viewBox="0 0 180 90" preserveAspectRatio="none"><path d="M0 60 C 20 60, 35 58, 50 55 S 80 30, 100 35 S 135 25, 180 20 L180 90 L0 90 Z" fill="#edf5ff" stroke="#b8d4ff" stroke-width="2" fill-opacity="1"></path></svg>';
@@ -66,6 +66,17 @@ function buildSparkline(values) {
     const max = Math.max(...safeValues);
     const range = max - min || 1;
 
+    let cor = "#4e8ef7";
+
+    if(status === "ONLINE")
+        cor = "#1f9d6d";
+
+    else if(status === "WARNING")
+        cor = "#d48b1c";
+
+    else if(status === "OFFLINE")
+        cor = "#d64b4b";
+
     const points = safeValues.map((value, index) => {
         const x = (index / Math.max(safeValues.length - 1, 1)) * 180;
         const y = 80 - (((value - min) / range) * 52 + 13);
@@ -74,7 +85,7 @@ function buildSparkline(values) {
 
     return `
         <svg class="sparkline-svg" viewBox="0 0 180 90" preserveAspectRatio="none">
-            <polyline points="${points}" fill="none" stroke="#4e8ef7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></polyline>
+            <polyline points="${points}" fill="none" stroke="${cor}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></polyline>
         </svg>
     `;
 }
@@ -101,7 +112,12 @@ function renderCards(items) {
                     <span class="status-badge status-${statusClass}"><span class="dot ${statusClass}"></span>${statusClass}</span>
                 </div>
 
-                <div class="sparkline-box">${buildSparkline([latency && Number(latency) ? Number(latency) : 35, latency && Number(latency) ? Number(latency) + 8 : 25, latency && Number(latency) ? Number(latency) - 6 : 55, latency && Number(latency) ? Number(latency) + 5 : 45, latency && Number(latency) ? Number(latency) : 30])}</div>
+                <div class="sparkline-box">
+                    ${buildSparkline(
+                        item.historico || [],
+                        statusClass
+                    )}
+                </div>
 
                 <div class="stats">
                     <div class="metric">
@@ -209,6 +225,7 @@ async function loadData() {
                     ...item,
                     status: statusData.status || 'OFFLINE',
                     latencia: statusData.latencia ?? statusData.tempo ?? null,
+                    historico: statusData.historico || [],
                     perda: statusData.perda ?? statusData.packet_loss ?? (statusData.status === 'ONLINE' ? 0 : 100),
                     tempo: statusData.tempo ?? statusData.latencia ?? null
                 };
@@ -241,6 +258,7 @@ searchInput.addEventListener('input', async () => {
                 ...item,
                 status: statusData.status || 'OFFLINE',
                 latencia: statusData.latencia ?? statusData.tempo ?? null,
+                historico: statusData.historico || [],
                 perda: statusData.perda ?? statusData.packet_loss ?? (statusData.status === 'ONLINE' ? 0 : 100),
                 tempo: statusData.tempo ?? statusData.latencia ?? null
             };

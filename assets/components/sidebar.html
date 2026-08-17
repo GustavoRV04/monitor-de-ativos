@@ -8,6 +8,10 @@
     <div class="sidebar-actions">
         <button id="addAssetBtn" class="btn btn-primary">+ Adicionar Ativo</button>
 
+        <button id="manualPingBtn" class="btn"style=" margin-top:10px;">
+    🔍      Ping Manual
+        </button>
+
         <section class="eventos-card">
 
             <div class="eventos-header">
@@ -25,4 +29,72 @@
         </section>
         <div data-include="add_asset.html"></div>
     </div>
+
+    <div
+    id="pingModal"
+    style="
+        display:none;
+        position:fixed;
+        inset:0;
+        background:rgba(0,0,0,.4);
+        z-index:999;
+    "
+>
+
+    <div
+        style="
+            background:white;
+            width:420px;
+            max-width:90%;
+            margin:120px auto;
+            padding:20px;
+            border-radius:12px;
+        "
+    >
+
+        <h3>
+            Ping Manual
+        </h3>
+
+        <button
+            id="fecharPingModal"
+            style="
+                float:right;
+                border:none;
+                background:none;
+                font-size:20px;
+                cursor:pointer;
+                "   
+        >
+            ×
+        </button>
+
+        <input
+            id="manualPingHost"
+            type="text"
+            placeholder="Host ou IP"
+            style="
+                width:100%;
+                padding:10px;
+                margin-bottom:12px;
+            "
+        >
+
+        <button
+            id="executarPingBtn"
+            class="btn btn-primary"
+        >
+            Executar Ping
+        </button>
+
+        <div
+            id="resultadoPingManual"
+            style="
+                margin-top:15px;
+            "
+        ></div>
+
+    </div>
+
+</div>
 </aside>
