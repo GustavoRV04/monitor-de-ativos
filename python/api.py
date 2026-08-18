@@ -49,6 +49,14 @@ def unidade_view(estado, unidade):
     return send_from_directory(str(BASE_DIR / "output"), "multi_ping.html")
 
 
+@app.route("/circuitos")
+def circuitos():
+
+    return send_from_directory(
+        str(BASE_DIR / "output"),
+        "circuitos.html"
+    )
+
 @app.route("/monitorar/<host>")
 def monitorar(host):
 
@@ -445,6 +453,7 @@ def remover_ativo():
             "erro": str(erro)
 
         }), 500
+
 
 @app.route('/api/add_asset', methods=['POST'])
 def api_add_asset():

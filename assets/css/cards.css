@@ -186,3 +186,15 @@
     overflow: hidden;
     text-overflow: ellipsis;
 }
+
+.circuito-online{
+    border-left:5px solid #2e7d32;
+}
+
+.circuito-warning{
+    border-left:5px solid #f9a825;
+}
+
+.circuito-offline{
+    border-left:5px solid #c62828;
+}

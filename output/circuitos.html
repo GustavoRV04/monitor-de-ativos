@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Circuitos</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet"
+    >
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,0..200"
+        rel="stylesheet"
+    >
+
+    <link rel="stylesheet" href="/assets/css/design-system.css">
+    <link rel="stylesheet" href="/assets/css/cards.css">
+    <link rel="stylesheet" href="/assets/css/components.css">
+
+</head>
+
+<body>
+
+    <div class="app">
+
+        <div data-include="sidebar.html"></div>
+
+        <main class="content">
+
+            <div data-include="header.html"></div>
+
+            <section class="cards">
+
+                <div class="card">
+                    <h3>Total de Circuitos</h3>
+                    <div id="totalCircuitos">0</div>
+                </div>
+
+                <div class="card card-online">
+                    <h3>Circuitos Ativos</h3>
+                    <div id="totalAtivosCircuito">0</div>
+                </div>
+
+                <div class="card card-offline">
+                    <h3>Circuitos Inativos</h3>
+                    <div id="totalInativosCircuito">0</div>
+                </div>
+
+            </section>
+
+            <section id="conteudoCircuitos"></section>
+
+        <script src="/assets/js/components.js"></script>
+        <script src="/assets/js/circuitos.js"></script>
+
+        </main>
+
+        <div data-include="rightpanel.html"></div>
+
+    
