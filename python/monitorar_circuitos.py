@@ -1,31 +1,178 @@
-# python/monitorar_circuitos.py
-
 import json
 from pathlib import Path
+import subprocess
+import re
+import time
+from statistics import mean
+from datetime import datetime
+
+
+def carregar_status():
+
+    if ARQ_STATUS.exists():
+
+        try:
+
+            with open(
+                ARQ_STATUS,
+                "r",
+                encoding="utf-8"
+            ) as f:
+
+                return json.load(f)
+
+        except Exception:
+
+            pass
+
+    return {}
+
+
+def salvar_status(status):
+
+    with open(
+        ARQ_STATUS,
+        "w",
+        encoding="utf-8"
+    ) as f:
+
+        json.dump(
+            status,
+            f,
+            ensure_ascii=False,
+            indent=4
+        )
+
+
+def classificar(loss_medio):
+
+    if loss_medio >= 80:
+        return "INDISPONIVEL"
+
+    elif loss_medio >= 20:
+        return "DEGRADADO"
+
+    return "OPERACIONAL"
+
+
+
+def testar_circuito(ip):
+
+    try:
+
+        resultado = subprocess.run(
+            [
+                "ping",
+                "-n",
+                str(PINGS_POR_CIRCUITO),
+                ip
+            ],
+            capture_output=True,
+            text=True,
+            encoding="cp850",
+            errors="ignore",
+            timeout=40,
+        )
+
+        saida = resultado.stdout
+
+        loss = 100
+
+
+        perda = re.search(
+            r"\((\d+)%\s+de\s+perda\)",
+            saida,
+            re.IGNORECASE
+        )
+
+        if perda:
+
+            loss = int(
+                perda.group(1)
+            )
+
+        latencia = None
+
+        tempos = re.findall(
+            r"tempo[=<](\d+)",   
+            saida,
+            re.IGNORECASE
+        )
+
+        if tempos:
+
+            valores = [
+                int(x)
+                for x in tempos
+            ]
+
+            latencia = round(
+                mean(valores),
+                2
+            )
+
+        return {
+
+            "loss":
+                loss,
+
+            "latencia":
+                latencia
+
+        }
+
+    except Exception as erro:
+
+        print()
+        print("ERRO:", ip)
+        print(erro)
+        print()
+
+        return {
+
+            "loss": 100,
+            "latencia": None
+
+        }
+    
+
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-arquivo_circuitos = (
+ARQ_CIRCUITOS = (
     BASE_DIR /
     "data" /
     "circuitos.json"
 )
 
-saida = (
+ARQ_STATUS = (
     BASE_DIR /
     "data" /
     "status_circuitos.json"
 )
 
+ARQ_CURSOR = (
+    BASE_DIR /
+    "data" /
+    "cursor_circuitos.json"
+)
+
+TAMANHO_LOTE = 50
+
+PINGS_POR_CIRCUITO = 25
+
+TAMANHO_HISTORICO = 5
+
+
 with open(
-    arquivo_circuitos,
+    ARQ_CIRCUITOS,
     "r",
     encoding="utf-8"
 ) as f:
 
     circuitos = json.load(f)
 
-status_circuitos = {}
+ips = []
 
 for circuito in circuitos:
 
@@ -37,37 +184,208 @@ for circuito in circuitos:
     ).strip()
 
     if (
-        not ip
-        or ip.lower() == "nan"
+        ip
+        and ip.lower() != "nan"
+        and "." in ip
     ):
-        continue
+        ips.append(ip)
 
-    status_circuitos[ip] = {
+ips = sorted(
+    list(set(ips))
+)
 
-        "status":
-            "OPERACIONAL",
+if ARQ_CURSOR.exists():
 
-        "loss":
-            0,
+    with open(
+        ARQ_CURSOR,
+        "r",
+        encoding="utf-8"
+    ) as f:
 
-        "latencia":
-            0
+        cursor = json.load(f)
 
-    }
+    posicao = cursor.get(
+        "posicao",
+        0
+    )
+
+else:
+
+    posicao = 0
+
+fim = posicao + TAMANHO_LOTE
+
+lote = ips[
+    posicao:fim
+]
+
+nova_posicao = fim
+
+if nova_posicao >= len(ips):
+    nova_posicao = 0
 
 with open(
-    saida,
+    ARQ_CURSOR,
     "w",
     encoding="utf-8"
 ) as f:
 
     json.dump(
-        status_circuitos,
+        {
+            "posicao":
+            nova_posicao
+        },
         f,
-        indent=4,
-        ensure_ascii=False
+        indent=4
     )
 
+print()
 print(
-    f"Status gerados: {len(status_circuitos)}"
+    f"IPs totais: {len(ips)}"
+)
+
+print(
+    f"Monitorando lote: {len(lote)}"
+)
+
+print(
+    f"Próxima posição: {nova_posicao}"
+)
+
+status_atual = carregar_status()
+
+print()
+print(
+    "Monitorando circuitos..."
+)
+
+inicio = time.time()
+operacional = 0
+degradado = 0
+indisponivel = 0
+
+for ip in lote:
+
+    
+
+
+    resultado = testar_circuito(ip)
+
+    loss = resultado["loss"]
+
+    latencia = resultado["latencia"]
+
+    anterior = status_atual.get(
+        ip,
+        {}
+    )
+
+    historico_latencia = anterior.get(
+        "historico_latencia",
+        []
+    )
+
+    if latencia is not None:
+
+        historico_latencia.append(
+            latencia
+        )
+
+    historico_latencia = historico_latencia[-TAMANHO_HISTORICO:]
+
+    latencia_media = None
+
+    if historico_latencia:
+
+        latencia_media = round(
+            mean(historico_latencia),
+            2
+        )
+
+    historico = anterior.get(
+        "historico",
+        []
+    )
+
+    historico.append(loss)
+
+    historico = historico[-TAMANHO_HISTORICO:]
+
+    loss_medio = round(
+        mean(historico),
+        2
+    )
+
+    status = classificar(
+        loss_medio
+    )
+
+    if status == "OPERACIONAL":
+
+        operacional += 1
+
+    elif status == "DEGRADADO":
+
+        degradado += 1
+
+    else:
+
+        indisponivel += 1
+
+
+    status_atual[ip] = {
+
+        "status":
+            status,
+
+        "loss_atual":
+            loss,
+
+        "loss_medio":
+            loss_medio,
+
+        "latencia_media":
+            latencia_media,
+
+        "historico_latencia":
+            historico_latencia,
+
+        "historico":
+            historico,
+
+        "ultima_atualizacao":
+            datetime.now().strftime(
+                "%d/%m/%Y %H:%M:%S"
+            )
+
+    }
+
+    print(
+        f"{ip} -> "
+        f"{status} | "
+        f"loss={loss}% | "
+        f"lat={latencia}ms"
+    )
+print()
+print("Resumo do lote")
+print(f"🟢 Operacionais: {operacional}")
+print(f"🟡 Degradados: {degradado}")
+print(f"🔴 Indisponíveis: {indisponivel}")
+
+fim = time.time()
+
+print()
+print(
+    f"Tempo do lote: "
+    f"{round(fim - inicio,2)}s"
+)
+
+
+salvar_status(
+    status_atual
+)
+
+print()
+print(
+    f"Status atualizados: {len(lote)}"
 )

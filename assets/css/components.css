@@ -40,6 +40,10 @@ body {
     box-sizing: border-box;
     display: flex;
     flex-direction: column;
+
+    position: sticky;
+    top: 0;
+    height: 100vh;
 }
 
 .logo {
@@ -394,6 +398,11 @@ body {
     border-left: 1px solid var(--line);
     padding: 18px 16px;
     box-sizing: border-box;
+
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    overflow-y: auto;
 }
 
 .painel-detalhes-inner h3 {

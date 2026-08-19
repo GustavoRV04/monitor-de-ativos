@@ -541,6 +541,51 @@ def api_add_asset():
 
     return jsonify({"status": "ok", "host": host}), 201
 
+def atualizador_circuitos():
+
+    while True:
+        print(
+            "[CIRCUITOS] Novo ciclo"
+        )
+
+        try:
+
+            print(
+                "Atualizando circuitos..."
+            )
+            inicio = time.time()
+
+            print(
+                "[CIRCUITOS] Iniciando lote..."
+            )
+
+            subprocess.run(
+                [
+                    sys.executable,
+                    str(
+                        BASE_DIR /
+                        "python" /
+                        "monitorar_circuitos.py"
+                    )
+                ],
+                timeout=2100
+            )
+
+            fim = time.time()
+
+            print(
+                f"[CIRCUITOS] Lote concluído em "
+                f"{round(fim-inicio,2)}s"
+            )
+
+        except Exception as erro:
+
+            print(
+                f"[CIRCUITOS] ERRO: {erro}"
+            )
+
+            time.sleep(30)
+
 def atualizador_inventario():
 
     while True:
@@ -562,6 +607,7 @@ def atualizador_inventario():
                 ]
             )
 
+
         except Exception as e:
 
             print(e)
@@ -572,6 +618,11 @@ if __name__ == "__main__":
 
     threading.Thread(
     target=atualizador_inventario,
+    daemon=True
+    ).start()
+
+    threading.Thread(
+    target=atualizador_circuitos,
     daemon=True
     ).start()
 
