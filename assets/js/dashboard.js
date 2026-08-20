@@ -1,5 +1,6 @@
 let inventarioGlobal = {};
 let statusGlobal = {};
+let filtroAtivos = "";
 let estadoAtual = null;
 let hostDesmobilizacao = null;
 
@@ -158,6 +159,22 @@ function mostrarEstado(estado){
                 });
 
             const sparkPoints = generateSparkline(totalOnline);
+
+            if (filtroAtivos === "ONLINE" && totalOffline > 0){
+
+                return;
+
+            }
+
+            if(
+                filtroAtivos === "OFFLINE"
+                &&
+                totalOffline === 0
+            ){
+
+                return;
+
+            }
 
             htmlAll += `
                 <div class="unidade-card">
@@ -768,3 +785,43 @@ function inicializarDesmobilizacao(){
 
 }
 
+function aplicarFiltroAtivos(status){
+
+    if(
+        filtroAtivos === status
+    ){
+
+        filtroAtivos = "";
+
+    }
+    else{
+
+        filtroAtivos = status;
+
+    }
+
+    document
+        .querySelectorAll(".card")
+        .forEach(card =>
+            card.classList.remove(
+                "filtro-ativo"
+            )
+        );
+
+    if(filtroAtivos){
+
+        document
+            .querySelector(
+                `[onclick*="${status}"]`
+            )
+            ?.classList.add(
+                "filtro-ativo"
+            );
+
+    }
+
+    mostrarEstado(
+        estadoAtual
+    );
+
+}

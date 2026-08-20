@@ -27943,24 +27943,6 @@
                 "host": "rs4017ra1.rs.caixa",
                 "ip": "10.70.0.42",
                 "tipo": "ROTEADOR"
-            },
-            {
-                "estado": "RS",
-                "cgc": "4017",
-                "unidade": "4017 - SAA PAB TRT 4A REGIÃO PORTO ALEGRE",
-                "equipamento": "RS4017SW001.RS.CAIXA",
-                "host": "RS4017SW001.RS.CAIXA",
-                "ip": "10.70.88.16",
-                "tipo": "SWITCH"
-            },
-            {
-                "estado": "RS",
-                "cgc": "4017",
-                "unidade": "4017 - SAA PAB TRT 4A REGIÃO PORTO ALEGRE",
-                "equipamento": "RS4017SW031.RS.CAIXA",
-                "host": "RS4017SW031.RS.CAIXA",
-                "ip": "10.70.88.31",
-                "tipo": "SWITCH"
             }
         ],
         "4152 - SAA AG. AV FREDERICO LINCK": [

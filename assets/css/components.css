@@ -280,6 +280,14 @@ body {
     font-weight: 700;
 }
 
+.card.filtro-ativo{
+
+    border:2px solid #003974;
+
+    transform:scale(1.02);
+
+}
+
 .badge {
     display: inline-flex;
     align-items: center;
@@ -380,10 +388,17 @@ body {
 }
 
 .equipamento .meta {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-end;
-    gap: 4px;
+
+    display:flex;
+
+    align-items:center;
+
+    gap:10px;
+
+    font-size:11px;
+
+    white-space:nowrap;
+
 }
 
 .equipamento .uptime {

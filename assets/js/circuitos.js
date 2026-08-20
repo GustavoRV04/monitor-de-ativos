@@ -1,6 +1,8 @@
 let circuitosGlobal = {};
 let statusCircuitos = {};
 let alarmesCircuitos = [];
+let filtroAtual = "";
+let circuitoFiltro = "";
 
 async function carregarCircuitos(){
 
@@ -35,6 +37,20 @@ async function carregarCircuitos(){
     montarCircuitos();
     montarAlarmesCircuitos();
 
+const busca =
+    document.getElementById(
+        "busca"
+    );
+
+if(busca){
+
+    busca.addEventListener(
+        "input",
+        filtrarCircuitos
+    );
+
+}
+
 }
 
 function montarCircuitos(){
@@ -51,6 +67,36 @@ function montarCircuitos(){
     let degradados = 0;
     let indisponiveis = 0;
 
+    Object.values(statusCircuitos)
+        .forEach(monitoramento => {
+
+            if(
+                monitoramento.status ===
+                "OPERACIONAL"
+            ){
+
+                operacionais++;
+
+            }
+            else if(
+                monitoramento.status ===
+                "DEGRADADO"
+            ){
+
+                degradados++;
+
+            }
+            else if(
+                monitoramento.status ===
+                "INDISPONIVEL"
+            ){
+
+                indisponiveis++;
+
+            }
+
+        });
+
     Object.keys(
         circuitosGlobal
     ).forEach(estado => {
@@ -66,48 +112,62 @@ function montarCircuitos(){
 
             const lista =
                 circuitosGlobal[estado][unidade];
+            
+            const textoUnidade = `
+                ${unidade}
+                ${estado}
+                ${JSON.stringify(lista)}
+            `.toUpperCase();
+
+            if(
+                filtroAtual &&
+                !textoUnidade.includes(
+                    filtroAtual
+                    )
+            ){
+
+                return;
+
+            }
 
             total += lista.length;
 
             let itens = "";
+            let unidadeTemFiltro = false;
+
 
             lista.forEach(circuito => {
                 const monitoramento =
                     statusCircuitos[
                         circuito.ip_primario
                     ];
-                    if(monitoramento){
+                    
+                    if(
 
-                        if(
-                            monitoramento.status === "OPERACIONAL"
-                        ){
+                        circuitoFiltro === ""
 
-                            operacionais++;
+                    ){
 
-                        }
-                        else if(
-                            monitoramento.status ===
-                            "DEGRADADO"
-                        ){
-
-                            degradados++;
-
-                        }
-                        else if(
-                            monitoramento.status ===
-                            "INDISPONIVEL"
-                        ){
-
-                            indisponiveis++;
-
-                        }
+                        unidadeTemFiltro = true;
 
                     }
+                    else if(
+
+                        monitoramento?.status ===
+                        circuitoFiltro
+
+                    ){
+
+                        unidadeTemFiltro = true;
+
+                    }
+
                 const lossMedio =
                     monitoramento?.loss_medio ?? 0;
 
             let classe = "circuito-online";
             let textoStatus = "🟢 OPERACIONAL";
+            let classeStatus = "status-operacional";
 
             if(monitoramento){
 
@@ -128,6 +188,8 @@ function montarCircuitos(){
                     textoStatus =
                         "🔴 INDISPONÍVEL";
 
+                    classeStatus = "status-indisponivel";
+
                 }
                 else if(
                     monitoramento.loss_medio >= 20
@@ -138,6 +200,7 @@ function montarCircuitos(){
 
                     textoStatus =
                         "🟡 DEGRADADO";
+                    classeStatus = "status-degradado";
 
                 }
                 if(lossMedio >= 80){
@@ -159,60 +222,62 @@ function montarCircuitos(){
             }
 
                 itens += `
-                    <div class="equipamento ${classe}" onclick="mostrarDetalhesCircuito('${circuito.ip_primario}',
-                        '${circuito.tipo_circuito}',
-                        '${circuito.operadora}',
-                        '${circuito.status}',
-                        '${unidade}',
-                        '${estado}')"
-                    >
+                    <div class="circuito-item ${classe}"
+                        onclick="mostrarDetalhesCircuito(
+                            '${circuito.ip_primario}',
+                            '${circuito.tipo_circuito}',
+                            '${circuito.operadora}',
+                            '${circuito.status}',
+                            '${unidade}',
+                            '${estado}',
+                            '${monitoramento?.loss_medio}',
+                            '${monitoramento?.latencia_media}',
+                            '${monitoramento?.mtu_status ?? "-"}',
+                            '${monitoramento?.ultima_atualizacao ?? "-"}'
+                        )">
 
-                        <div>
+                        <span class="circuito-nome">
+                            ${circuito.tipo_circuito}
+                        </span>
 
-                            <div class="name">
-                                ${circuito.tipo_circuito}
-                            </div>
+                        <span class="circuito-operadora">
+                            ${circuito.operadora}
+                        </span>
 
-                            <div class="ip">
-                                ${circuito.operadora}
-                            </div>
+                        <span class="circuito-ip">
+                            ${circuito.ip_primario}
+                        </span>
 
-                            <div class="ip">
-                                ${circuito.ip_primario}
-                            </div>
-
-                        </div>
-
-                        <div class="meta">
-
+                        <span
+                            class="circuito-status
+                                ${classeStatus}
+                            "
+                        >
                             ${textoStatus}
+                        </span>
 
-                            <br>
+                    </div>
 
-                            Loss:
-                            ${monitoramento?.loss_medio ?? "-"}%
-
-                            <br>
-
-                            Latência:
-                            ${monitoramento?.latencia_media ?? "-"}ms
-
-                            <br>
-
-                            Atualizado:
-
-                            <br>
-
-                            ${monitoramento?.ultima_atualizacao ?? "-"}
-
-                        </div>
                         </div>
                 `;
 
             });
 
+            if(
+                !unidadeTemFiltro
+            ){
+
+                return;
+
+            }
+            const horaAtualizacao =
+            ultimaAtualizacao
+                ? ultimaAtualizacao.split(" ")[1]
+                : "-";
+
+
             html += `
-                <div class="unidade-card">
+                <div class="cir-unidade-card">
 
                     <h3>
                         ${unidade}
@@ -244,7 +309,8 @@ function montarCircuitos(){
                         "
                     >
                         Última atualização:
-                        ${ultimaAtualizacao || "-"}
+                        ${horaAtualizacao}
+
                     </div>
 
                     <div class="equipamentos">
@@ -280,84 +346,6 @@ function montarCircuitos(){
 
 }
 
-function montarAlarmesCircuitos(){
-
-    const alarmes = Object.entries(
-        statusCircuitos
-    )
-    .filter(
-        ([ip,dados]) =>
-            dados.status !==
-            "OPERACIONAL"
-    )
-    .sort(
-        (a,b) =>
-            (
-                b[1].ultima_atualizacao || ""
-            ).localeCompare(
-                a[1].ultima_atualizacao || ""
-            )
-    )
-    .slice(0,10);
-
-    const container =
-        document.getElementById(
-            "eventosLista"
-        );
-
-    if(!container){
-        return;
-    }
-
-    let html = "";
-
-    alarmes.forEach(
-        ([ip,dados]) => {
-
-            const icone =
-                dados.status ===
-                "INDISPONIVEL"
-                ? "🔴"
-                : "🟡";
-
-            html += `
-                <div class="evento-sidebar-item">
-
-                    <div>
-
-                        <strong>
-                            ${icone}
-                            ${ip}
-                        </strong>
-
-                        <br>
-
-                        Loss:
-                        ${dados.loss_medio}%
-
-                        <br>
-
-                        <small>
-                            ${dados.ultima_atualizacao}
-                        </small>
-
-                    </div>
-
-                </div>
-            `;
-        }
-    );
-
-    if(!html){
-
-        html =
-            "Nenhum circuito degradado ou indisponível.";
-
-    }
-
-    container.innerHTML =
-        html;
-}
 
     function montarAlarmesCircuitos(){
 
@@ -483,7 +471,11 @@ function montarAlarmesCircuitos(){
     operadora,
     status,
     unidade,
-    estado
+    estado,
+    loss,
+    latencia,
+    mtu,
+    atualizacao
 ){
 
     const painel =
@@ -506,6 +498,19 @@ function montarAlarmesCircuitos(){
         <p><b>Status:</b> ${status}</p>
         <p><b>Estado:</b> ${estado}</p>
         <p><b>Unidade:</b> ${unidade}</p>
+        <p><b>Loss Médio:</b> ${loss}%</p>
+        <p><b>Latência Média:</b> ${latencia} ms</p>
+        <p><b>MTU:</b><span style="color:${mtu === 'OK' ? '#1f9d6d' : '#d88b1d'};
+            font-weight:700;
+            ">
+                ${
+                    mtu === "OK"
+                    ? "✅ 1500"
+                    : "⚠ REDUZIDO"
+                }
+            </span>
+        </p>
+        <p><b>Última Atualização:</b> ${atualizacao}</p>
 
         <button
             class="btn-monitorar"
@@ -546,6 +551,58 @@ async function monitorarCircuito(ip){
         );
 
     }
+
+}
+
+function filtrarCircuitos(){
+
+    filtroAtual =
+        document
+            .getElementById("busca")
+            .value
+            .trim()
+            .toUpperCase();
+
+    montarCircuitos();
+
+}
+
+function aplicarFiltroCircuito(status){
+
+    if(
+        circuitoFiltro === status
+    ){
+
+        circuitoFiltro = "";
+
+    }
+    else{
+
+        circuitoFiltro = status;
+
+    }
+    document
+        .querySelectorAll(".card")
+        .forEach(
+            card =>
+            card.classList.remove(
+                "filtro-ativo"
+            )
+        );
+
+    if(circuitoFiltro){
+
+        document
+            .querySelector(
+                `[onclick*="${circuitoFiltro}"]`
+            )
+            ?.classList.add(
+                "filtro-ativo"
+            );
+
+    }
+
+    montarCircuitos();
 
 }
 

@@ -39,17 +39,17 @@
 
             <section class="cards">
 
-                <div class="card card-online">
+                <div class="card card-online" onclick="aplicarFiltroCircuito('OPERACIONAL')">
                     <h3>Operacionais</h3>
                     <div id="totalOperacionais">0</div>
                 </div>
 
-                <div class="card card-warning">
+                <div class="card card-warning" onclick="aplicarFiltroCircuito('DEGRADADO')">
                     <h3>Degradados</h3>
                     <div id="totalDegradados">0</div>
                 </div>
 
-                <div class="card card-offline">
+                <div class="card card-offline" onclick="aplicarFiltroCircuito('INDISPONIVEL')">
                     <h3>Indisponíveis</h3>
                     <div id="totalIndisponiveis">0</div>
                 </div>

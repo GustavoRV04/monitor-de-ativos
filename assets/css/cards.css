@@ -12,8 +12,8 @@
     box-shadow: 0 2px 8px rgba(0,0,0,.08);
     display: flex !important;
     flex-direction: column !important;
-    height: 100% !important; 
-    max-height: 480px !important; 
+    height: 100% !important;
+    max-height: 480px !important;
 }
 
 .unidade-card:hover {
@@ -29,13 +29,13 @@
 }
 
 .unidade-card .equipamentos {
-    padding: 0 8px 0 0; 
-    flex: 1 1 auto !important; 
-    min-height: 0 !important; 
+    padding: 0 8px 0 0;
+    flex: 1 1 auto !important;
+    min-height: 0 !important;
     overflow-y: auto !important;
     display: flex;
     flex-direction: column;
-    gap: 12px; 
+    gap: 12px;
 }
 
 .unidade-card .equipamentos::-webkit-scrollbar { width: 6px; }
@@ -82,17 +82,19 @@
 
 
 .equipamento {
-    padding: 10px;
-    border-radius: 6px;
-    background: #f8f9fb;
-    flex-shrink: 0 !important; 
-    
-    box-sizing: border-box;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 8px;
-    overflow: hidden; 
+
+    padding: 6px 10px;
+
+    min-height: 50px;
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    gap:12px;
+
 }
 
 .equipamento .left {
@@ -110,13 +112,19 @@
     white-space: nowrap;
 }
 
-.equipamento .name, .equipamento .ip {
-    display: block;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
+
+.equipamento .name{
+
+    font-size:13px;
+
+    font-weight:700;
+
 }
 
+.equipamento .ip {
+    font-size:11px;
+    color:#667085;
+}
 .online{
     border-left:4px solid #1e8e3e;
 }
@@ -197,4 +205,195 @@
 
 .circuito-offline{
     border-left:5px solid #c62828;
+}
+
+.circuito-item{
+    display:grid;
+    border:1px solid #eef2f7;
+    grid-template-columns:
+        140px
+        80px
+        130px
+        140px;
+
+    align-items:center;
+
+    gap:8px;
+
+    padding:8px 8px;
+
+    margin-bottom:4px;
+
+    border-radius:4px;
+
+    background:#fafcff;
+}
+
+.circuito-item + .circuito-item {
+
+    margin-top:4px;
+
+}
+
+.circuito-nome {
+
+    font-size:13px;
+
+    font-weight:700;
+
+    color:#142033;
+
+}
+
+
+.circuito-status {
+
+    font-size:11px;
+
+    font-weight:700;
+
+    padding:4px 8px;
+
+    border-radius:999px;
+
+    text-align:center;
+
+    white-space:nowrap;
+
+}
+.status-operacional {
+
+    color:#0f7b46;
+
+    background:#dff7ea;
+
+    border:1px solid #b4ebca;
+
+}
+.status-degradado {
+
+    color:#a66a00;
+
+    background:#fff4d6;
+
+    border:1px solid #f6d483;
+
+}
+.status-indisponivel {
+
+    color:#b42318;
+
+    background:#fde2e2;
+
+    border:1px solid #f1a7a7;
+
+}
+.circuito-operadora{
+
+    font-size:12px;
+
+    color:#667085;
+}
+
+.circuito-unidade-card {
+
+    background:#fff;
+
+    border-radius:8px;
+
+    padding:8px;
+
+    margin-bottom:8px;
+
+    border:1px solid #dfe9f5;
+
+    box-shadow:
+        0 2px 8px
+        rgba(0,0,0,.05);
+
+}
+
+.critico-item, .criticos-header {
+    align-items:center;
+    display:grid;
+
+    grid-template-columns:
+        140px /* status */
+        360px /* unidade */
+        120px /* tipo */
+        160px /* ip */
+        170px /* historico */
+        100px /* loss */
+        180px; /* atualização */
+
+    gap:12px;
+
+    padding:12px;
+
+    margin-bottom:8px;
+
+    border-radius:8px;
+
+    background:white;
+
+    border:1px solid #dfe9f5;
+
+}
+
+.critico-indisponivel {
+
+    border-left:
+    6px solid #c62828;
+
+    background:#fff2f2;
+
+}
+
+.critico-degradado {
+
+    border-left:
+    6px solid #f9a825;
+
+    background:#fff9e8;
+
+}
+
+.btn-criticos {
+
+    width: auto !important;
+
+    min-width: 180px;
+
+    padding: 10px 16px;
+
+    flex: 0 0 auto;
+
+}
+
+.hist-item{
+
+    width:18px;
+
+    height:18px;
+
+    border-radius:4px;
+
+    display:inline-block;
+
+    margin-right:5px;
+
+}
+.hist-ok{
+    background:#1f9d6d;
+}
+.hist-warn{
+    background:#f9a825;
+}
+.hist-bad{
+    background:#c62828;
+}
+.hist-empty{
+
+    background:#d9dde3;
+
 }

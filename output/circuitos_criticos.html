@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Circuitos Críticos</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet"
+    >
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,0..200"
+        rel="stylesheet"
+    >
+    <link rel="stylesheet" href="/assets/css/cards.css">
+    <link rel="stylesheet" href="/assets/css/design-system.css">
+    <link rel="stylesheet" href="/assets/css/components.css">
+
+
+    <main class="content">
+
+        <div class="header-inner">
+
+            <div class="header-left">
+
+                ⚠ Circuitos Críticos
+
+            </div>
+
+            <div class="header-right">
+
+                <button
+                    class="btn btn-primary"
+                    onclick="window.location.href='/circuitos'"
+                >
+                    Voltar
+                </button>
+
+            </div>
+
+        </div>
+
+        <section class="cards">
+
+            <div class="card card-warning">
+
+                <h3>Degradados</h3>
+
+                <div id="totalDegradados">
+                    0
+                </div>
+
+            </div>
+
+            <div class="card card-offline">
+
+                <h3>Indisponíveis</h3>
+
+                <div id="totalIndisponiveis">
+                    0
+                </div>
+
+            </div>
+
+        </section>
+        <div class="criticos-header">
+
+            <div>Status</div>
+
+            <div>Unidade</div>
+
+            <div>Tipo</div>
+
+            <div>IP</div>
+
+            <div>Histórico (5)</div>
+
+            <div>Loss Médio</div>
+
+            <div>Última Atualização</div>
+
+        </div>
+
+        <div id="listaCriticos">
+
+        </div>
+
+    </main>
+
+</div>
+
+<script src="/assets/js/components.js"></script>
+<script src="/assets/js/circuitos_criticos.js"></script>
+
+</body>
+
+</html>

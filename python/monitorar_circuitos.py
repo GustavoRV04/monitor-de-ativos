@@ -54,6 +54,32 @@ def classificar(loss_medio):
 
     return "OPERACIONAL"
 
+def testar_mtu(ip):
+
+    try:
+
+        resultado = subprocess.run(
+            [
+                "ping",
+                "-n",
+                "1",
+                "-f",
+                "-l",
+                "1472",
+                ip
+            ],
+            capture_output=True,
+            text=True,
+            encoding="cp850",
+            errors="ignore",
+            timeout=5
+        )
+
+        return resultado.returncode == 0
+
+    except Exception:
+
+        return False
 
 
 def testar_circuito(ip):
@@ -271,6 +297,8 @@ for ip in lote:
 
     resultado = testar_circuito(ip)
 
+    mtu = testar_mtu(ip)
+
     loss = resultado["loss"]
 
     latencia = resultado["latencia"]
@@ -346,6 +374,11 @@ for ip in lote:
 
         "latencia_media":
             latencia_media,
+
+        "mtu_status":
+            "OK"
+            if mtu
+            else "REDUZIDO",
 
         "historico_latencia":
             historico_latencia,

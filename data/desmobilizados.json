@@ -1,0 +1,18 @@
+[
+    {
+        "host": "RS4017SW001.RS.CAIXA",
+        "equipamento": "RS4017SW001.RS.CAIXA",
+        "estado": "RS",
+        "unidade": "4017 - SAA PAB TRT 4A REGIÃO PORTO ALEGRE",
+        "motivo": "SW desinstalado",
+        "data": "20/08/2026 14:08:29"
+    },
+    {
+        "host": "RS4017SW031.RS.CAIXA",
+        "equipamento": "RS4017SW031.RS.CAIXA",
+        "estado": "RS",
+        "unidade": "4017 - SAA PAB TRT 4A REGIÃO PORTO ALEGRE",
+        "motivo": "SW desinstalado",
+        "data": "20/08/2026 14:08:53"
+    }
+]

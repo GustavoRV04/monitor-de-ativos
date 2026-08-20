@@ -49,12 +49,21 @@ def unidade_view(estado, unidade):
     return send_from_directory(str(BASE_DIR / "output"), "multi_ping.html")
 
 
+
 @app.route("/circuitos")
 def circuitos():
 
     return send_from_directory(
         str(BASE_DIR / "output"),
         "circuitos.html"
+    )
+
+@app.route("/circuitos-criticos")
+def circuitos_criticos():
+
+    return send_from_directory(
+        str(BASE_DIR / "output"),
+        "circuitos_criticos.html"
     )
 
 @app.route("/monitorar/<host>")
@@ -630,3 +639,5 @@ if __name__ == "__main__":
         host="127.0.0.1",
         port=5000
     )
+
+

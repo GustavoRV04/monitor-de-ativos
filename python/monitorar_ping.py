@@ -35,6 +35,32 @@ while True:
 
         PRECISION_COUNT = 1
 
+        def testar_mtu(host):
+
+            try:
+
+                resultado = subprocess.run(
+                    [
+                        "ping",
+                        "-n",
+                        "1",
+                        "-f",
+                        "-l",
+                        "1472",
+                        host
+                    ],
+                    capture_output=True,
+                    text=True,
+                    timeout=2
+                )
+
+                return resultado.returncode == 0
+
+            except Exception:
+
+                return False
+
+
         def run_ping_once():
 
             try:
@@ -125,6 +151,9 @@ while True:
         if online
         else "OFFLINE",
 
+     "mtu_1500":
+        testar_mtu(host),
+   
     "enviados":
         PRECISION_COUNT,
 
