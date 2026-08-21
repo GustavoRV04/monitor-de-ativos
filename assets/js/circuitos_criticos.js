@@ -75,6 +75,9 @@ async function carregarCriticos(){
                     historico:
                         monitoramento.historico || [],
 
+                    historico_horas:
+                        monitoramento.historico_horas || [],
+
                     atualizacao:
                         monitoramento
                         .ultima_atualizacao
@@ -119,6 +122,14 @@ function renderizarCriticos(
 
             : "critico-degradado";
 
+        const classeStatus =
+            item.status ===
+            "INDISPONIVEL"
+
+            ? "critico-status-off"
+
+            : "critico-status-warn";
+
         if(
             item.status ===
             "INDISPONIVEL"
@@ -145,9 +156,23 @@ function renderizarCriticos(
             item.historico.join(" → ")
             : "-";
 
+        let historicoHoras =
+                [...(item.historico_horas || [])];
+
+            while(
+                historicoHoras.length < 5
+            ){
+                historicoHoras.unshift(
+                    null
+                );
+            }
+
         const historicoVisual =
             historicoCompleto
-            .map(valor => {
+            .map((valor,index) => {
+
+                const hora =
+                    historicoHoras[index];
 
                 if(valor === null){
 
@@ -181,7 +206,10 @@ function renderizarCriticos(
                             hist-item
                             ${classe}
                         "
-                        title="${valor}%"
+                        title="
+                        Loss: ${valor}%
+                        Hora: ${hora ?? '-'}
+                        "
                     ></span>
                 `;
 
@@ -192,7 +220,7 @@ function renderizarCriticos(
 
             <div class="critico-item ${classe}">
 
-                <div>
+                <div class="${classeStatus}">
                     ${item.status}
                 </div>
 

@@ -16,6 +16,14 @@
     max-height: 480px !important;
 }
 
+body.dark-mode .unidade-card{
+
+    background:#1b2635;
+
+    border-color:#334155;
+
+}
+
 .unidade-card:hover {
     box-shadow: 0 4px 12px rgba(0,0,0,0.05);
 }
@@ -26,6 +34,40 @@
     align-items:center;
     margin-bottom:15px;
     flex-shrink: 0 !important; 
+}
+
+body.dark-mode .card-header{
+
+    background:#243244;
+
+    border-bottom:1px solid #374151;
+
+}
+
+body.dark-mode .card-header h3{
+
+    color:#ffffff;
+
+    font-weight:800;
+
+}
+
+body.dark-mode .equipamento .name{
+
+    color:#ffffff;
+
+}
+
+body.dark-mode .equipamento .ip{
+
+    color:#b6c2d2;
+
+}
+
+body.dark-mode .equipamento .uptime{
+
+    color:#d1d5db;
+
 }
 
 .unidade-card .equipamentos {
@@ -48,6 +90,30 @@
     border-top: 1px solid #c2c6d3;
     margin-top: 16px !important; 
     flex-shrink: 0 !important; 
+}
+
+body.dark-mode .card-footer{
+
+    background:#1f2937;
+
+    border-top:1px solid #374151;
+
+}
+
+body.dark-mode .secondary-btn{
+
+    background:#243244;
+
+    border:1px solid #4b5563;
+
+    color:#f3f4f6;
+
+}
+
+body.dark-mode .secondary-btn:hover{
+
+    background:#334155;
+
 }
 
 .unidade-card .card-footer button {
@@ -208,13 +274,16 @@
 }
 
 .circuito-item{
+
     display:grid;
-    border:1px solid #eef2f7;
+
     grid-template-columns:
-        140px
-        80px
-        130px
-        140px;
+
+        140px  /* tipo */
+        220px  /* designação */
+        90px   /* operadora */
+        160px  /* ip */
+        160px; /* status */
 
     align-items:center;
 
@@ -358,6 +427,184 @@
 
 }
 
+.critico-status-off{
+
+    background:#991b1b;
+
+    color:white;
+
+    padding:4px 8px;
+
+    border-radius:999px;
+
+    text-align:center;
+
+}
+
+.critico-status-warn{
+
+    background:#d97706;
+
+    color:white;
+
+    padding:4px 8px;
+
+    border-radius:999px;
+
+    text-align:center;
+
+}
+
+body.dark-mode .criticos-header{
+
+    background:#243244;
+
+    border-color:#334155;
+
+    color:#f3f4f6;
+
+}
+
+body.dark-mode .critico-indisponivel{
+
+    background:#2f1a1a;
+
+    border-color:#7f1d1d;
+
+}
+
+body.dark-mode .critico-degradado{
+
+    background:#33280f;
+
+    border-color:#a16207;
+
+}
+
+body.dark-mode .critico-item{
+
+    color:#f8fafc;
+
+}
+
+body.dark-mode .critico-item div{
+
+    color:#f8fafc;
+
+}
+
+body.dark-mode .critico-item div:nth-child(4),
+body.dark-mode .critico-item div:nth-child(7){
+
+    color:#cbd5e1;
+
+}
+
+body.dark-mode .circuito-unidade-card{
+
+    background:#1b2635;
+
+    border-color:#334155;
+
+    color:#f3f4f6;
+
+}
+
+body.dark-mode .circuito-item{
+
+    background:#243244;
+
+    border-color:#334155;
+
+}
+
+body.dark-mode .circuito-nome{
+
+    color:#ffffff;
+
+}
+
+body.dark-mode .circuito-operadora{
+
+    color:#cbd5e1;
+
+}
+
+body.dark-mode .circuito-ip{
+
+    color:#94a3b8;
+
+}
+
+body.dark-mode .circuito-unidade-card h3{
+
+    color:#ffffff;
+
+}
+
+body.dark-mode .circuito-unidade-card small{
+
+    color:#cbd5e1;
+
+}
+
+body.dark-mode .circuito-unidade-card div{
+
+    color:#e2e8f0;
+
+}
+body.dark-mode .circuito-resumo{
+
+    color:#e2e8f0;
+
+}
+
+body.dark-mode .status-operacional{
+
+    background:#113828;
+
+    color:#4ade80;
+
+    border-color:#166534;
+
+}
+
+
+body.dark-mode .status-degradado{
+
+    background:#3a2d0f;
+
+    color:#fbbf24;
+
+    border-color:#92400e;
+
+}
+
+.circuito-designacao{
+
+    font-size:12px;
+
+    color:#667085;
+
+    white-space:nowrap;
+
+}
+
+body.dark-mode .circuito-designacao{
+
+    color:#94a3b8;
+
+}
+
+body.dark-mode .status-indisponivel{
+
+    background:#3b1717;
+
+    color:#f87171;
+
+    border-color:#991b1b;
+
+}
 .btn-criticos {
 
     width: auto !important;
@@ -369,6 +616,120 @@
     flex: 0 0 auto;
 
 }
+
+.circuito-historico-card{
+
+    background:white;
+
+    border:1px solid #dfe9f5;
+
+    border-radius:12px;
+
+    padding:20px;
+
+}
+
+.historico-blocos{
+
+    display:flex;
+
+    gap:10px;
+
+    margin:20px 0 10px;
+
+}
+
+.historico-ponto{
+
+    width:24px;
+
+    height:24px;
+
+    border-radius:50%;
+
+}
+
+.historico-ok{
+
+    background:#22c55e;
+
+}
+
+.historico-warn{
+
+    background:#f59e0b;
+
+}
+
+.historico-bad{
+
+    background:#ef4444;
+
+}
+
+.historico-horas{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    font-size:11px;
+
+    color:#64748b;
+
+}
+
+
+
+body.dark-mode .circuito-historico-card{
+
+    background:#1b2635;
+
+    border-color:#334155;
+
+}
+
+
+.circuitos-grid{
+
+    display:grid;
+
+    grid-template-columns:
+        repeat(
+            auto-fit,
+            minmax(450px,1fr)
+        );
+
+    gap:20px;
+
+}
+
+
+.timeline-badge-ok{
+
+    background:#dff7ee;
+
+    color:#1f9d6d;
+
+}
+
+.timeline-badge-warn{
+
+    background:#fff3d9;
+
+    color:#d88b1d;
+
+}
+
+.timeline-badge-bad{
+
+    background:#fde7eb;
+
+    color:#d64b4b;
+
+}
+
+
 
 .hist-item{
 

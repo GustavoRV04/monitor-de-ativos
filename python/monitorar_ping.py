@@ -17,6 +17,16 @@ ARQ_SAIDA = (
     "ping_detalhado.json"
 )
 
+if ARQ_SAIDA.exists():
+
+    try:
+
+        ARQ_SAIDA.unlink()
+
+    except Exception:
+
+        pass
+
 if len(sys.argv) < 2:
 
     print("Informe o host")
@@ -276,7 +286,7 @@ while True:
                         tempo = tcp_tempo
                         historico[-1]["tempo"] = tempo
 
-        historico = historico[-100:]
+        historico = historico[-30:]
 
         # write to temp file then move to avoid partial writes and handle OneDrive locks
         try:

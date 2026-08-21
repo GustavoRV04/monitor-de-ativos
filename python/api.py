@@ -66,6 +66,19 @@ def circuitos_criticos():
         "circuitos_criticos.html"
     )
 
+@app.route(
+    "/circuitos-unidade/<estado>/<path:unidade>"
+)
+def circuitos_unidade(
+    estado,
+    unidade
+):
+
+    return send_from_directory(
+        str(BASE_DIR / "output"),
+        "circuitos_unidade.html"
+    )
+
 @app.route("/monitorar/<host>")
 def monitorar(host):
 
@@ -123,6 +136,25 @@ def monitorar(host):
 def encerrar_monitor():
 
     global processo_ping
+
+    try:
+
+        ping_file = (
+            BASE_DIR /
+            "data" /
+            "ping_detalhado.json"
+        )
+
+        if ping_file.exists():
+
+            ping_file.unlink()
+
+    except Exception as erro:
+
+        print(
+            f"Erro removendo ping_detalhado.json: {erro}"
+        )
+
 
     if processo_ping:
 

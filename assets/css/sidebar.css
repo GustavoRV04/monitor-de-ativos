@@ -24,6 +24,20 @@
     background:rgba(255,255,255,.18);
 }
 
+body.dark-mode .menu-item{
+
+    color:#cbd5e1;
+
+}
+
+body.dark-mode .menu-item:hover{
+
+    background:#243244;
+
+    color:#ffffff;
+
+}
+
 .painel-detalhes{
 
     width:320px;
@@ -54,6 +68,12 @@
     font-size:12px;
 
     border-bottom:1px solid #eef2f7;
+}
+
+body.dark-mode .evento-sidebar-item{
+
+    color:#e5e7eb;
+
 }
 
 .painel-detalhes-inner{

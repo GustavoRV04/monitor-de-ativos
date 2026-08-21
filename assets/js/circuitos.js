@@ -53,6 +53,22 @@ if(busca){
 
 }
 
+function abrirHistoricoCircuitos(
+    estado,
+    unidade
+){
+
+    const estadoCodificado =
+        encodeURIComponent(estado);
+
+    const unidadeCodificada =
+        encodeURIComponent(unidade);
+
+    window.location.href =
+        `/circuitos-unidade/${estadoCodificado}/${unidadeCodificada}`;
+
+}
+
 function montarCircuitos(){
 
     const conteudo =
@@ -227,6 +243,8 @@ function montarCircuitos(){
                             '${circuito.ip_primario}',
                             '${circuito.tipo_circuito}',
                             '${circuito.operadora}',
+                            '${circuito.designacao ?? "-"}',
+                            '${circuito.velocidade ?? "-"}',
                             '${circuito.status}',
                             '${unidade}',
                             '${estado}',
@@ -238,6 +256,10 @@ function montarCircuitos(){
 
                         <span class="circuito-nome">
                             ${circuito.tipo_circuito}
+                        </span>
+
+                        <span class="circuito-designacao">
+                            ${circuito.designacao ?? "-"}
                         </span>
 
                         <span class="circuito-operadora">
@@ -279,9 +301,31 @@ function montarCircuitos(){
             html += `
                 <div class="cir-unidade-card">
 
-                    <h3>
-                        ${unidade}
-                    </h3>
+                    <div
+                        style="
+                            display:flex;
+                            justify-content:space-between;
+                            align-items:center;
+                        "
+                    >
+
+                        <h3>
+                            ${unidade}
+                        </h3>
+
+                        <button
+                            class="btn-historico-circuitos"
+                            onclick="
+                                abrirHistoricoCircuitos(
+                                    '${estado}',
+                                    '${unidade}'
+                                )
+                            "
+                        >
+                            📈
+                        </button>
+
+                    </div>
 
                     <small>
                         ${estado}
@@ -469,6 +513,8 @@ function montarCircuitos(){
     ip,
     tipo,
     operadora,
+    designacao,
+    velocidade,
     status,
     unidade,
     estado,
@@ -495,6 +541,8 @@ function montarCircuitos(){
 
         <p><b>IP:</b> ${ip}</p>
         <p><b>Operadora:</b> ${operadora}</p>
+        <p><b>Designação:</b> ${designacao}</p><p>
+        <b>Velocidade:</b>${velocidade}</p>
         <p><b>Status:</b> ${status}</p>
         <p><b>Estado:</b> ${estado}</p>
         <p><b>Unidade:</b> ${unidade}</p>

@@ -34,3 +34,69 @@ if (document.readyState === 'loading') {
 } else {
     loadComponents();
 }
+
+function alternarTema(){
+
+    document.body.classList.toggle(
+        "dark-mode"
+    );
+
+    const escuro =
+        document.body.classList.contains(
+            "dark-mode"
+        );
+
+    localStorage.setItem(
+        "tema",
+        escuro
+            ? "dark"
+            : "light"
+    );
+
+    const botao =
+        document.getElementById(
+            "themeToggle"
+        );
+
+    if(botao){
+
+        botao.innerText =
+            escuro
+                ? "☀️"
+                : "🌙";
+
+    }
+
+}
+
+document.addEventListener(
+    "DOMContentLoaded",
+    () => {
+
+        const tema =
+            localStorage.getItem(
+                "tema"
+            );
+
+        if(tema === "dark"){
+
+            document.body.classList.add(
+                "dark-mode"
+            );
+
+            const botao =
+                document.getElementById(
+                    "themeToggle"
+                );
+
+            if(botao){
+
+                botao.innerText =
+                    "☀️";
+
+            }
+
+        }
+
+    }
+);

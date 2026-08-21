@@ -97,7 +97,7 @@ def testar_circuito(ip):
             text=True,
             encoding="cp850",
             errors="ignore",
-            timeout=40,
+            timeout=50,
         )
 
         saida = resultado.stdout
@@ -335,9 +335,22 @@ for ip in lote:
         []
     )
 
+    historico_horas = anterior.get(
+        "historico_horas",
+        []
+    )
+
     historico.append(loss)
 
+    historico_horas.append(
+        datetime.now().strftime(
+            "%H:%M:%S"
+        )
+)
+
     historico = historico[-TAMANHO_HISTORICO:]
+
+    historico_horas = historico_horas[-TAMANHO_HISTORICO:]
 
     loss_medio = round(
         mean(historico),
@@ -385,6 +398,9 @@ for ip in lote:
 
         "historico":
             historico,
+
+        "historico_horas":
+            historico_horas,
 
         "ultima_atualizacao":
             datetime.now().strftime(
