@@ -86,17 +86,26 @@ function montarCircuitos(
             const horas =
                 monitoramento?.historico_horas || [];
             
-            const historicoVisual =
+            const historicoDetalhado =
                 historico
-                    .map(valor => {
+                    .map((valor,index) => {
+
+                        const dataHora =
+                            horas[index] || "-";
 
                         let classe =
                             "historico-ok";
+
+                        let emoji =
+                            "🟢";
 
                         if(valor >= 80){
 
                             classe =
                                 "historico-bad";
+
+                            emoji =
+                                "🔴";
 
                         }
                         else if(valor >= 20){
@@ -104,33 +113,36 @@ function montarCircuitos(
                             classe =
                                 "historico-warn";
 
+                            emoji =
+                                "🟡";
+
                         }
 
                         return `
-                            <div
-                                class="
-                                historico-ponto
-                                    ${classe}
-                                "
-                                title="${valor}%"
-                            >
+
+                            <div class="
+                                historico-linha
+                                ${classe}
+                            ">
+
+                                <span>
+                                    ${emoji}
+                                </span>
+
+                                <span>
+                                    ${dataHora}
+                                </span>
+
+                                <span>
+                                    ${valor}%
+                                </span>
+
                             </div>
+
                         `;
 
                     })
-                    .join("");
-
-            const historicoHoras =
-                horas
-                    .map(hora => {
-
-                        return `
-                            <span>
-                                ${hora}
-                            </span>
-                        `;
-
-                    })
+                    .reverse()
                     .join("");
         
 
@@ -186,12 +198,10 @@ function montarCircuitos(
 
                     </p>
 
-                    <div class="historico-blocos">
-                        ${historicoVisual}
-                    </div>
+                    <div class="historico-lista">
 
-                    <div class="historico-horas">
-                        ${historicoHoras}
+                        ${historicoDetalhado}
+
                     </div>
 
                     <p

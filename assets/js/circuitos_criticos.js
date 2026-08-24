@@ -1,3 +1,5 @@
+let ultimaExecucao = "";
+
 async function carregarCriticos(){
 
     const respCircuitos =
@@ -56,6 +58,9 @@ async function carregarCriticos(){
 
                     circuito:
                         circuito.tipo_circuito,
+
+                    designacao:
+                        circuito.designacao,
 
                     operadora:
                         circuito.operadora,
@@ -216,6 +221,8 @@ function renderizarCriticos(
             })
             .join("");
 
+
+
         html += `
 
             <div class="critico-item ${classe}">
@@ -230,6 +237,10 @@ function renderizarCriticos(
 
                 <div>
                     ${item.circuito}
+                </div>
+
+                <div>
+                    ${item.designacao || "-"}
                 </div>
 
                 <div>
@@ -274,6 +285,51 @@ function renderizarCriticos(
 
 }
 
+async function verificarAtualizacao(){
+
+    try{
+
+        const resp =
+            await fetch(
+                "/data/circuitos_meta.json"
+                +
+                "?t=" +
+                Date.now()
+            );
+
+        const meta =
+            await resp.json();
+
+        if(
+            !ultimaExecucao
+        ){
+
+            ultimaExecucao =
+                meta.ultima_execucao;
+
+            return;
+        }
+
+        if(
+            meta.ultima_execucao !==
+            ultimaExecucao
+        ){
+
+            location.reload();
+
+        }
+
+    }
+    catch(erro){
+
+        console.error(
+            erro
+        );
+
+    }
+
+}
+
 if(
     window.__componentsLoaded
 ){
@@ -287,3 +343,8 @@ else{
     );
 
 }
+
+setInterval(
+    verificarAtualizacao,
+    30000
+);

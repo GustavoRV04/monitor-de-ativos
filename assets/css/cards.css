@@ -388,9 +388,10 @@ body.dark-mode .secondary-btn:hover{
 
     grid-template-columns:
         140px /* status */
-        360px /* unidade */
+        330px /* unidade */
         120px /* tipo */
-        160px /* ip */
+        180px /* designacao */
+        140px /* ip */
         170px /* historico */
         100px /* loss */
         180px; /* atualização */
@@ -651,21 +652,22 @@ body.dark-mode .status-indisponivel{
 
 .historico-ok{
 
-    background:#22c55e;
+    border-left:4px solid #22c55e;
 
 }
 
 .historico-warn{
 
-    background:#f59e0b;
+    border-left:4px solid #f59e0b;
 
 }
 
 .historico-bad{
 
-    background:#ef4444;
+    border-left:4px solid #ef4444;
 
 }
+
 
 .historico-horas{
 
@@ -679,7 +681,46 @@ body.dark-mode .status-indisponivel{
 
 }
 
+.historico-lista{
 
+    margin-top:18px;
+
+}
+
+.historico-linha{
+
+    display:grid;
+
+    grid-template-columns:
+        40px
+        160px
+        80px;
+
+    align-items:center;
+
+    gap:12px;
+
+    padding:10px 12px;
+
+    margin-bottom:8px;
+
+    border-radius:8px;
+
+    background:#f8fafc;
+
+}
+
+.historico-linha span:last-child{
+
+    font-weight:700;
+
+}
+
+body.dark-mode .historico-linha{
+
+    background:#243244;
+
+}
 
 body.dark-mode .circuito-historico-card{
 

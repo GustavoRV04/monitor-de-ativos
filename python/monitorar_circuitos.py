@@ -183,6 +183,12 @@ ARQ_CURSOR = (
     "cursor_circuitos.json"
 )
 
+ARQ_META = (
+    BASE_DIR /
+    "data" /
+    "circuitos_meta.json"
+)
+
 TAMANHO_LOTE = 50
 
 PINGS_POR_CIRCUITO = 25
@@ -344,9 +350,10 @@ for ip in lote:
 
     historico_horas.append(
         datetime.now().strftime(
-            "%H:%M:%S"
+            "%d/%m/%Y %H:%M:%S"
         )
-)
+    )
+
 
     historico = historico[-TAMANHO_HISTORICO:]
 
@@ -433,6 +440,26 @@ print(
 salvar_status(
     status_atual
 )
+
+with open(
+    ARQ_META,
+    "w",
+    encoding="utf-8"
+) as f:
+
+    json.dump(
+        {
+            "ultima_execucao":
+                datetime.now().strftime(
+                    "%d/%m/%Y %H:%M:%S"
+                ),
+            "lote":
+                len(lote)
+        },
+        f,
+        indent=4,
+        ensure_ascii=False
+    )
 
 print()
 print(
