@@ -5,7 +5,7 @@ import re
 import time
 from statistics import mean
 from datetime import datetime
-
+from tempfile import NamedTemporaryFile
 
 def carregar_status():
 
@@ -30,18 +30,27 @@ def carregar_status():
 
 def salvar_status(status):
 
-    with open(
-        ARQ_STATUS,
+    with NamedTemporaryFile(
         "w",
-        encoding="utf-8"
-    ) as f:
+        delete=False,
+        encoding="utf-8",
+        dir=str(
+            ARQ_STATUS.parent
+        )
+    ) as tmp:
 
         json.dump(
             status,
-            f,
+            tmp,
             ensure_ascii=False,
             indent=4
         )
+
+    Path(
+        tmp.name
+    ).replace(
+        ARQ_STATUS
+    )
 
 
 def classificar(loss_medio):

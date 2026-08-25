@@ -73,11 +73,63 @@
         </section>
         <div class="criticos-header">
 
-            <div>Status</div>
+            <div>
+
+                <select
+                    onchange="
+                        alterarFiltroStatus(
+                            this.value
+                        )
+                    "
+                >
+
+                    <option value="">
+                        Status
+                    </option>
+
+                    <option value="DEGRADADO">
+                        Degradado
+                    </option>
+
+                    <option value="INDISPONIVEL">
+                        Indisponível
+                    </option>
+
+                </select>
+
+            </div>
 
             <div>Unidade</div>
 
-            <div>Tipo</div>
+            <div>
+
+                <select
+                    onchange="
+                        alterarFiltroTipo(
+                            this.value
+                        )
+                    "
+                >
+
+                    <option value="">
+                        Tipo
+                    </option>
+
+                    <option value="PUBLICA">
+                        Pública
+                    </option>
+
+                    <option value="PRIVATIVA">
+                        Privativa
+                    </option>
+
+                    <option value="REDE 0">
+                        Rede 0
+                    </option>
+
+                </select>
+
+            </div>
 
             <div>Designação</div>
 

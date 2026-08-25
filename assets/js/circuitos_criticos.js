@@ -1,5 +1,9 @@
 let ultimaExecucao = "";
 
+let filtroStatus = "";
+let filtroTipo = "";
+let criticosGlobal = [];
+
 async function carregarCriticos(){
 
     const respCircuitos =
@@ -106,7 +110,9 @@ async function carregarCriticos(){
         criticos
     );
 
+    criticosGlobal = criticos;
 }
+
 
 function renderizarCriticos(
     criticos
@@ -118,6 +124,21 @@ function renderizarCriticos(
     let html = "";
 
     criticos.forEach(item => {
+
+        if(
+            filtroStatus &&
+            item.status !== filtroStatus
+        ){
+            return;
+        }
+
+        if(
+            filtroTipo &&
+            item.circuito !== filtroTipo
+        ){
+            return;
+        }
+
 
         const classe =
             item.status ===
@@ -348,3 +369,23 @@ setInterval(
     verificarAtualizacao,
     30000
 );
+
+function alterarFiltroStatus(valor){
+
+    filtroStatus = valor;
+
+    renderizarCriticos(
+        criticosGlobal
+    );
+
+}
+
+function alterarFiltroTipo(valor){
+
+    filtroTipo = valor;
+
+    renderizarCriticos(
+        criticosGlobal
+    );
+
+}

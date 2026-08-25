@@ -410,6 +410,32 @@ body.dark-mode .secondary-btn:hover{
 
 }
 
+.criticos-header select{
+
+    width:100%;
+
+    border:none;
+
+    background:transparent;
+
+    font-size:15px;
+
+    font-weight:600;
+
+    cursor:pointer;
+
+    color:inherit;
+
+}
+
+body.dark-mode .criticos-header select{
+
+    background:transparent;
+
+    color:#f3f4f6;
+
+}
+
 .critico-indisponivel {
 
     border-left:
