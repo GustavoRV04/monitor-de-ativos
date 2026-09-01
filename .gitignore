@@ -13,6 +13,13 @@ data/resultado_ping.json
 data/ping_detalhado.json
 data/eventos.json
 data/monitor.lock
+data/resultado_ping.json
+data/status_circuitos.json
+data/historico_ping.json
+data/cursor_circuitos.json
+data/circuitos_meta.json
+data/ping_detalhado.json
+data/eventos.json
 
 # Logs
 *.log

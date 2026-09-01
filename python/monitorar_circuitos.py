@@ -58,7 +58,7 @@ def classificar(loss_medio):
     if loss_medio >= 80:
         return "INDISPONIVEL"
 
-    elif loss_medio >= 20:
+    elif loss_medio >= 10:
         return "DEGRADADO"
 
     return "OPERACIONAL"
@@ -70,7 +70,7 @@ def testar_mtu(ip):
         resultado = subprocess.run(
             [
                 "ping",
-                "-n",
+                "-c",
                 "1",
                 "-f",
                 "-l",
@@ -98,7 +98,7 @@ def testar_circuito(ip):
         resultado = subprocess.run(
             [
                 "ping",
-                "-n",
+                "-c",
                 str(PINGS_POR_CIRCUITO),
                 ip
             ],
@@ -115,10 +115,10 @@ def testar_circuito(ip):
 
 
         perda = re.search(
-            r"\((\d+)%\s+de\s+perda\)",
+            r"(\d+)%\s*(?:de\s+perda|packet\s+loss)",
             saida,
             re.IGNORECASE
-        )
+)
 
         if perda:
 
@@ -129,7 +129,7 @@ def testar_circuito(ip):
         latencia = None
 
         tempos = re.findall(
-            r"tempo[=<](\d+)",   
+            r"(?:tempo|time)[=<]?\s*(\d+(?:\.\d+)?)",
             saida,
             re.IGNORECASE
         )
@@ -137,7 +137,7 @@ def testar_circuito(ip):
         if tempos:
 
             valores = [
-                int(x)
+                float(x)
                 for x in tempos
             ]
 
@@ -200,7 +200,7 @@ ARQ_META = (
 
 TAMANHO_LOTE = 50
 
-PINGS_POR_CIRCUITO = 25
+PINGS_POR_CIRCUITO = 15
 
 TAMANHO_HISTORICO = 5
 
@@ -371,6 +371,13 @@ for ip in lote:
     loss_medio = round(
         mean(historico),
         2
+    )
+
+    print(
+        f"{ip} "
+        f"loss={loss} "
+        f"historico={historico} "
+        f"media={loss_medio}"
     )
 
     status = classificar(

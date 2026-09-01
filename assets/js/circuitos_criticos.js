@@ -389,3 +389,88 @@ function alterarFiltroTipo(valor){
     );
 
 }
+
+function exportarExcel(){
+
+    let dados = criticosGlobal;
+
+    if(filtroStatus){
+
+        dados = dados.filter(
+            item =>
+                item.status === filtroStatus
+        );
+
+    }
+
+    if(filtroTipo){
+
+        dados = dados.filter(
+            item =>
+                item.circuito === filtroTipo
+        );
+
+    }
+
+    const linhas =
+        dados.map(item => ({
+
+            Status:
+                item.status,
+
+            Unidade:
+                item.unidade,
+
+            Tipo:
+                item.circuito,
+
+            Designacao:
+                item.designacao || "",
+
+            Operadora:
+                item.operadora,
+
+            IP:
+                item.ip,
+
+            Loss_Medio:
+                item.loss,
+
+            Latencia_Media:
+                item.latencia,
+
+            Atualizacao:
+                item.atualizacao,
+
+            Historico:
+                item.historico.join(" | "),
+
+            Historico_Horas:
+                item.historico_horas.join(" | ")
+
+        }));
+
+    const worksheet =
+        XLSX.utils.json_to_sheet(
+            linhas
+        );
+
+    const workbook =
+        XLSX.utils.book_new();
+
+    XLSX.utils.book_append_sheet(
+        workbook,
+        worksheet,
+        "Circuitos Criticos"
+    );
+
+    XLSX.writeFile(
+        workbook,
+        `Circuitos_Criticos_${
+            new Date()
+                .toISOString()
+                .slice(0,10)
+        }.xlsx`
+    );
+
+}

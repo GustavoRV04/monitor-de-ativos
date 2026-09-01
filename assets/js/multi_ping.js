@@ -1,7 +1,7 @@
 const pathParts = window.location.pathname.split('/').filter(Boolean);
 const routeName = pathParts[0];
 const routeType = routeName === 'unidade' || routeName === 'multi-ping' ? routeName : null;
-const API_BASE = 'http://127.0.0.1:5000';
+const API_BASE = 'http://10.68.14.22:5000';
 
 const context = {
     estado: '',
