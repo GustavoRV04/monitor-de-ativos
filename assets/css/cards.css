@@ -80,6 +80,72 @@ body.dark-mode .equipamento .uptime{
     gap: 12px;
 }
 
+.unidade-card.selecionado{
+
+    border:2px solid #2563eb;
+
+    box-shadow:
+        0 0 16px rgba(
+            37,
+            99,
+            235,
+            .15
+        );
+
+}
+
+.equipamento.selecionado{
+
+    background:#dbeafe !important;
+
+    border-left:4px solid #2563eb;
+
+    border-radius:6px;
+
+    box-shadow:
+        0 2px 8px rgba(37,99,235,.15);
+
+}
+
+body.dark-mode .equipamento.selecionado{
+
+    background:#1e3a5f !important;
+
+    border-left:4px solid #60a5fa;
+
+}
+
+
+.circuito-item.selecionado{
+
+    background:#dbeafe;
+
+    border:2px solid #2563eb;
+
+    box-shadow:
+        0 2px 8px rgba(
+            37,
+            99,
+            235,
+            .15
+        );
+
+}
+
+.cir-unidade-card.selecionado{
+
+    border:2px solid #2563eb;
+
+    box-shadow:
+        0 0 18px rgba(
+            37,
+            99,
+            235,
+            .15
+        );
+
+}
+
 .unidade-card .equipamentos::-webkit-scrollbar { width: 6px; }
 .unidade-card .equipamentos::-webkit-scrollbar-track { background: #f1f5f9; border-radius: 8px; }
 .unidade-card .equipamentos::-webkit-scrollbar-thumb { background: #c2c6d3; border-radius: 8px; }

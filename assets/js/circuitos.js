@@ -3,6 +3,7 @@ let statusCircuitos = {};
 let alarmesCircuitos = [];
 let filtroAtual = "";
 let circuitoFiltro = "";
+let circuitoSelecionado = null;
 
 async function carregarCircuitos(){
 
@@ -238,7 +239,7 @@ function montarCircuitos(){
             }
 
                 itens += `
-                    <div class="circuito-item ${classe}"
+                    <div class="circuito-item ${classe} ${circuitoSelecionado === circuito.ip_primario ? 'selecionado' : ''}"
                         onclick="mostrarDetalhesCircuito(
                             '${circuito.ip_primario}',
                             '${circuito.tipo_circuito}',
@@ -387,6 +388,47 @@ function montarCircuitos(){
     ).innerText = indisponiveis;
 
     conteudo.innerHTML = html;
+    if(circuitoSelecionado){
+
+        setTimeout(() => {
+
+            const item =
+                [...document.querySelectorAll(".circuito-item")]
+                .find(el => {
+
+                    const ipEl =
+                        el.querySelector(
+                            ".circuito-ip"
+                        );
+
+                    return (
+                        ipEl &&
+                        ipEl.innerText ===
+                        circuitoSelecionado
+                    );
+
+                });
+
+            if(item){
+
+                item.classList.add(
+                    "selecionado"
+                );
+
+                item
+                    .closest(
+                        ".cir-unidade-card"
+                    )
+                    ?.classList.add(
+                        "selecionado"
+                    );
+
+            }
+
+        }, 50);
+
+    }
+
 
 }
 
@@ -524,6 +566,57 @@ function montarCircuitos(){
     atualizacao
 ){
 
+    circuitoSelecionado = ip;
+
+    document
+        .querySelectorAll(
+            ".cir-unidade-card"
+        )
+        .forEach(card => {
+
+            card.classList.remove(
+                "selecionado"
+            );
+
+        });
+
+    document
+        .querySelectorAll(".circuito-item")
+        .forEach(item => {
+
+            item.classList.remove(
+                "selecionado"
+            );
+
+        });
+
+    document
+        .querySelectorAll(".circuito-item")
+        .forEach(item => {
+
+            const ipElemento =
+                item.querySelector(
+                    ".circuito-ip"
+                );
+
+            if(ipElemento &&ipElemento.innerText === ip){
+
+                item.classList.add(
+                    "selecionado"
+                );
+
+                item
+                    .closest(
+                        ".cir-unidade-card"
+                        )
+                    ?.classList.add(
+                        "selecionado"
+                    );
+
+            }
+
+        });
+
     const painel =
         document.getElementById(
             "detalhesEquipamento"
@@ -537,7 +630,18 @@ function montarCircuitos(){
     }
 
     painel.innerHTML = `
-        <h2>${tipo}</h2>
+    <div
+        style="
+            color:#2563eb;
+            font-weight:700;
+            margin-bottom:8px;
+        "
+    >
+        📡 Circuito Selecionado
+    </div>
+
+    <h2>${tipo}</h2>
+
 
         <p><b>IP:</b> ${ip}</p>
         <p><b>Operadora:</b> ${operadora}</p>

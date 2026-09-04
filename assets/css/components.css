@@ -600,6 +600,71 @@ body.dark-mode .equipamento .uptime{
     font-weight: 600;
 }
 
+.equipamento.selecionado{
+
+    background:#dbeafe !important;
+
+    border-left:4px solid #2563eb;
+
+    border-radius:6px;
+
+    box-shadow:
+        0 2px 8px rgba(37,99,235,.15);
+
+}
+
+body.dark-mode .equipamento.selecionado{
+
+    background:#1e3a5f !important;
+
+    border-left:4px solid #60a5fa;
+
+}
+
+.unidade-card.selecionado{
+
+    border:2px solid #2563eb;
+
+    box-shadow:
+        0 0 16px rgba(
+            37,
+            99,
+            235,
+            .15
+        );
+
+}
+
+.circuito-item.selecionado{
+
+    background:#dbeafe;
+
+    border:2px solid #2563eb;
+
+    box-shadow:
+        0 2px 8px rgba(
+            37,
+            99,
+            235,
+            .15
+        );
+
+}
+
+.cir-unidade-card.selecionado{
+
+    border:2px solid #2563eb;
+
+    box-shadow:
+        0 0 16px rgba(
+            37,
+            99,
+            235,
+            .15
+        );
+
+}
+
 .painel-detalhes-inner {
     width: 300px;
     background: var(--panel-bg);

@@ -668,7 +668,7 @@ if __name__ == "__main__":
     ).start()
 
     app.run(
-        host="10.68.14.22",
+        host="127.0.0.1",
         port=5000
     )
 

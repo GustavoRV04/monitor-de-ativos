@@ -1,6 +1,6 @@
 async function atualizar(){
 
-    const API_BASE = 'http://10.68.14.22:5000';
+    const API_BASE = API_URL;
     let inventarioCache = null;
     let host = localStorage.getItem("hostMonitorado") || null;
 

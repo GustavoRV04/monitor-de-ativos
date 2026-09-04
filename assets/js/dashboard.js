@@ -3,6 +3,10 @@ let statusGlobal = {};
 let filtroAtivos = "";
 let estadoAtual = null;
 let hostDesmobilizacao = null;
+let hostSelecionado = null;
+
+const API_URL =
+    "http://127.0.0.1:5000";
 
 function generateSparkline(total){
     // simple deterministic sparkline based on total value
@@ -208,12 +212,24 @@ function mostrarEstado(estado){
             `;
         });
     conteudo.innerHTML = htmlAll;
+
+    if(hostSelecionado){
+
+        setTimeout(() => {
+
+            mostrarDetalhes(
+                hostSelecionado
+            );
+
+        }, 100);
+
+    }
 }
 
 function abrirUnidade(estado, unidade) {
     const estadoCodificado = encodeURIComponent(String(estado || '').trim());
     const unidadeCodificada = encodeURIComponent(String(unidade || '').trim());
-    const baseUrl = 'http://10.68.14.22:5000';
+    const baseUrl = API_URL;
     window.location.href = `${baseUrl}/multi-ping/${estadoCodificado}/${unidadeCodificada}`;
 }
 
@@ -320,6 +336,64 @@ function pesquisar(){
 
 function mostrarDetalhes(host){
 
+    hostSelecionado = host;
+
+    document
+        .querySelectorAll(".equipamento")
+        .forEach(el => {
+
+            el.classList.remove(
+                "selecionado"
+            );
+
+        });
+
+    document
+    .querySelectorAll(".equipamento")
+    .forEach(el => {
+
+        el.classList.remove(
+            "selecionado"
+        );
+
+    });
+
+document
+    .querySelectorAll(".unidade-card")
+    .forEach(card => {
+
+        card.classList.remove(
+            "selecionado"
+        );
+
+    });
+
+document
+    .querySelectorAll(".equipamento")
+    .forEach(el => {
+
+        const ip =
+            el.querySelector(".ip");
+
+        if(
+            ip &&
+            ip.innerText === host
+        ){
+
+            el.classList.add(
+                "selecionado"
+            );
+
+            el
+                .closest(".unidade-card")
+                ?.classList.add(
+                    "selecionado"
+                );
+
+        }
+
+    });
+
 
     const painel =
         document.getElementById(
@@ -412,9 +486,10 @@ async function monitorarPing(host){
 
         const resposta =
             await fetch(
-                "http://10.68.14.22:5000/monitorar/" +
-                encodeURIComponent(host)
-            );
+                    API_URL +
+                    "/monitorar/" +
+                    encodeURIComponent(host)
+                );
 
         console.log(
             "Status:",
@@ -432,7 +507,8 @@ async function monitorarPing(host){
         );
 
         window.open(
-            "http://10.68.14.22:5000/monitor",
+            API_URL +
+            "/monitor",
             "_blank"
         );
 
@@ -590,7 +666,8 @@ if(executarBtn){
         try{
 
             await fetch(
-                "http://10.68.14.22:5000/monitorar/" +
+                API_URL +
+                "/monitorar/" +
                 encodeURIComponent(host)
             );
 
@@ -604,7 +681,8 @@ if(executarBtn){
             ).style.display = "none";
 
             window.open(
-                "http://10.68.14.22:5000/monitor",
+                API_URL +
+                "/monitor",
                 "_blank"
             );
 
