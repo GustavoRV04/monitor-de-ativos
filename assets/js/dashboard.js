@@ -213,7 +213,7 @@ function mostrarEstado(estado){
 function abrirUnidade(estado, unidade) {
     const estadoCodificado = encodeURIComponent(String(estado || '').trim());
     const unidadeCodificada = encodeURIComponent(String(unidade || '').trim());
-    const baseUrl = 'http://127.0.0.1:5000';
+    const baseUrl = 'http://10.68.14.22:5000';
     window.location.href = `${baseUrl}/multi-ping/${estadoCodificado}/${unidadeCodificada}`;
 }
 
@@ -412,7 +412,7 @@ async function monitorarPing(host){
 
         const resposta =
             await fetch(
-                "http://127.0.0.1:5000/monitorar/" +
+                "http://10.68.14.22:5000/monitorar/" +
                 encodeURIComponent(host)
             );
 
@@ -432,7 +432,7 @@ async function monitorarPing(host){
         );
 
         window.open(
-            "http://127.0.0.1:5000/monitor",
+            "http://10.68.14.22:5000/monitor",
             "_blank"
         );
 
@@ -590,7 +590,7 @@ if(executarBtn){
         try{
 
             await fetch(
-                "http://127.0.0.1:5000/monitorar/" +
+                "http://10.68.14.22:5000/monitorar/" +
                 encodeURIComponent(host)
             );
 
@@ -604,7 +604,7 @@ if(executarBtn){
             ).style.display = "none";
 
             window.open(
-                "http://127.0.0.1:5000/monitor",
+                "http://10.68.14.22:5000/monitor",
                 "_blank"
             );
 

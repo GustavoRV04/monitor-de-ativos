@@ -53,12 +53,22 @@ def salvar_status(status):
     )
 
 
-def classificar(loss_medio):
+def classificar(
+    loss_atual,
+    loss_medio
+):
+
+    if loss_atual == 0:
+
+        if loss_medio >= 80:
+            return "DEGRADADO"
+
+        return "OPERACIONAL"
 
     if loss_medio >= 80:
         return "INDISPONIVEL"
 
-    elif loss_medio >= 20:
+    elif loss_medio >= 10:
         return "DEGRADADO"
 
     return "OPERACIONAL"
@@ -70,7 +80,7 @@ def testar_mtu(ip):
         resultado = subprocess.run(
             [
                 "ping",
-                "-n",
+                "-c",
                 "1",
                 "-f",
                 "-l",
@@ -98,7 +108,7 @@ def testar_circuito(ip):
         resultado = subprocess.run(
             [
                 "ping",
-                "-n",
+                "-c",
                 str(PINGS_POR_CIRCUITO),
                 ip
             ],
@@ -115,10 +125,10 @@ def testar_circuito(ip):
 
 
         perda = re.search(
-            r"\((\d+)%\s+de\s+perda\)",
+            r"(\d+)%\s*(?:de\s+perda|packet\s+loss)",
             saida,
             re.IGNORECASE
-        )
+)
 
         if perda:
 
@@ -129,7 +139,7 @@ def testar_circuito(ip):
         latencia = None
 
         tempos = re.findall(
-            r"tempo[=<](\d+)",   
+            r"(?:tempo|time)[=<]?\s*(\d+(?:\.\d+)?)",
             saida,
             re.IGNORECASE
         )
@@ -137,7 +147,7 @@ def testar_circuito(ip):
         if tempos:
 
             valores = [
-                int(x)
+                float(x)
                 for x in tempos
             ]
 
@@ -200,7 +210,7 @@ ARQ_META = (
 
 TAMANHO_LOTE = 50
 
-PINGS_POR_CIRCUITO = 25
+PINGS_POR_CIRCUITO = 15
 
 TAMANHO_HISTORICO = 5
 
@@ -316,6 +326,12 @@ for ip in lote:
 
     loss = resultado["loss"]
 
+    if loss < 0:
+        loss = 0
+
+    if loss > 100:
+        loss = 100
+
     latencia = resultado["latencia"]
 
     anterior = status_atual.get(
@@ -357,6 +373,20 @@ for ip in lote:
 
     historico.append(loss)
 
+    historico = [
+
+        min(
+            100,
+                max(
+                    0,
+                    float(x)
+                )
+        )
+
+        for x in historico
+
+    ]
+
     historico_horas.append(
         datetime.now().strftime(
             "%d/%m/%Y %H:%M:%S"
@@ -373,7 +403,15 @@ for ip in lote:
         2
     )
 
+    print(
+        f"{ip} "
+        f"loss={loss} "
+        f"historico={historico} "
+        f"media={loss_medio}"
+    )
+
     status = classificar(
+        loss,
         loss_medio
     )
 

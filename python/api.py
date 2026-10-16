@@ -213,7 +213,7 @@ def ping_manual():
         resultado = subprocess.run(
             [
                 "ping",
-                "-n",
+                "-c",
                 "1",
                 host
             ],
@@ -668,7 +668,7 @@ if __name__ == "__main__":
     ).start()
 
     app.run(
-        host="127.0.0.1",
+        host="10.68.14.22",
         port=5000
     )
 

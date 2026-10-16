@@ -38,6 +38,13 @@
             <div class="header-right">
 
                 <button
+                    class="btn"
+                    onclick="exportarExcel()"
+                >
+                    📊 Exportar Excel
+                </button>
+
+                <button
                     class="btn btn-primary"
                     onclick="window.location.href='/circuitos'"
                 >
@@ -150,6 +157,8 @@
     </main>
 
 </div>
+
+<script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
 
 <script src="/assets/js/components.js"></script>
 <script src="/assets/js/circuitos_criticos.js"></script>

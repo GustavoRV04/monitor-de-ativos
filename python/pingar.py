@@ -90,7 +90,7 @@ def testar(ativo):
             try:
 
                 return subprocess.run(
-                    ["ping", "-n", "1", host],
+                    ["ping", "-c", "1", host],
                     capture_output=True,
                     text=True,
                     timeout=2
@@ -113,9 +113,11 @@ def testar(ativo):
             resultado = run_ping_once()
             saida = resultado.stdout or ""
             out_l = saida.lower()
+            print(
+                f"{host} | rc={resultado.returncode}"
+            )
 
             # heuristics for success / timeout (supports PT-BR and EN)
-            success = bool(re.search(r"reply from|resposta de|bytes=.*ttl=|ttl=", out_l))
             timeout_msgs = [
                 r"request timed out",
                 r"esgotado o tempo limite",
@@ -125,12 +127,13 @@ def testar(ativo):
             ]
             is_timeout = any(re.search(p, out_l) for p in timeout_msgs)
 
-            m = re.search(r"(?:time|tempo)[=<>\s]*<?\s*(\d+)\s*ms", out_l)
+            m = re.search(r"(?:time|tempo)[=<>\s]*<?\s*(\d+(?:\.\d+)?)\s*ms",out_l)
+
             if not m:
                 m = re.search(r"(\d+)\s*ms", out_l)
             if m:
                 try:
-                    lat = int(m.group(1))
+                    lat = float(m.group(1))
                     latencias.append(lat)
                     match_ttl = re.search(r"ttl=(\d+)", out_l, re.IGNORECASE)
                     if match_ttl:
@@ -141,9 +144,10 @@ def testar(ativo):
                 except Exception:
                     pass
 
-            if success or (resultado.returncode == 0 and not is_timeout):
+            if resultado.returncode == 0:
                 successes += 1
                 success_flag = True
+
 
             # small pause between attempts to avoid bursts
             if i < PRECISION_COUNT - 1:
