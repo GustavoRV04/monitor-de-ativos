@@ -195,7 +195,7 @@ function montarCircuitos(){
                 }
 
                 if(
-                    monitoramento.loss_medio >= 80
+                    monitoramento.status === "INDISPONIVEL"
                 ){
 
                     classe =
@@ -208,7 +208,7 @@ function montarCircuitos(){
 
                 }
                 else if(
-                    monitoramento.loss_medio >= 20
+                    monitoramento.status === "DEGRADADO"
                 ){
 
                     classe =
@@ -219,12 +219,12 @@ function montarCircuitos(){
                     classeStatus = "status-degradado";
 
                 }
-                if(lossMedio >= 80){
+                if(monitoramento.status === "INDISPONIVEL"){
 
                     totalOffline++;
 
                 }
-                else if(lossMedio >= 20){
+                else if(monitoramento.status === "DEGRADADO"){
 
                     totalWarning++;
 
@@ -245,9 +245,10 @@ function montarCircuitos(){
                             '${circuito.operadora}',
                             '${circuito.designacao ?? "-"}',
                             '${circuito.velocidade ?? "-"}',
-                            '${circuito.status}',
+                            '${monitoramento?.status ?? "OPERACIONAL"}',
                             '${unidade}',
                             '${estado}',
+                            '${monitoramento?.loss_atual}',
                             '${monitoramento?.loss_medio}',
                             '${monitoramento?.latencia_media}',
                             '${monitoramento?.mtu_status ?? "-"}',
@@ -467,7 +468,7 @@ function montarCircuitos(){
 
                         <br>
 
-                        Loss:
+                        Loss Médio:
                         ${dados.loss_medio}%
 
                         <br>
@@ -518,6 +519,7 @@ function montarCircuitos(){
     status,
     unidade,
     estado,
+    lossAtual,
     loss,
     latencia,
     mtu,
@@ -546,6 +548,7 @@ function montarCircuitos(){
         <p><b>Status:</b> ${status}</p>
         <p><b>Estado:</b> ${estado}</p>
         <p><b>Unidade:</b> ${unidade}</p>
+        <p><b>Loss Atual:</b> ${lossAtual}%</p>
         <p><b>Loss Médio:</b> ${loss}%</p>
         <p><b>Latência Média:</b> ${latencia} ms</p>
         <p><b>MTU:</b><span style="color:${mtu === 'OK' ? '#1f9d6d' : '#d88b1d'};
